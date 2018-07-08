@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd  ">
+
+    <context:component-scan base-package="com.yiban.service"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="classpath:jdbc.properties"
+          p:fileEncoding="utf-8"/>
+    <bean name="dataSource" class="org.apache.ibatis.datasource.pooled.PooledDataSource"
+          p:driver="${driver}"
+          p:url="${url}"
+          p:username="${userName}"
+          p:password="${password}"/>
+    <bean name="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:configuration.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com/yiban/config/**.xml"/>
+        <property name="typeAliasesPackage" value="com.yiban.entity"/>
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.yiban.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+    <!--开启事务-->
+    <bean id="transaction" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transaction"/>
+
+    <!--添加定时任务-->
+    <task:scheduler id="myScheduler" pool-size="5"/>
+    <task:annotation-driven scheduler="myScheduler"/>
+</beans>

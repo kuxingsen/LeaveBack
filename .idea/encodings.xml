@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/ClassTable.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Information.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Student.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/configuration.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/jdbc.properties" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/log4j.properties" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/yiban-servlet.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/app.js" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/node_modules" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/package-lock.json" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/package.json" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/public" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/add.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/index.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/modify.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/views/show.html" charset="GBK" />
+  </component>
+</project>

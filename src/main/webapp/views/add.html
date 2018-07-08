@@ -1,0 +1,128 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>后台管理</title>
+        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/public/css/bootstrap-table.min.css">
+        <link rel="stylesheet" href="/public/css/main.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index">后台管理</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index">主页</a></li>
+                        <li class="active"><a href="add">添加班级</a></li>
+                        <li><a href="show">请假记录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="content">
+            <div class="page-header">
+                <h1>添加班级 <button type="button" class="btn btn-info" id="upload">批量添加</button></h1>
+            </div>
+            
+            <form class="form-horizontal">
+                <div class="form-group row">
+                    <label for="classId" class="col-md-1 control-label">班级ID</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="classId" placeholder="班级ID">
+                    </div>
+                    <label for="className" class="col-md-1 control-label">班级名称</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="className" placeholder="班级名称">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="deanId" class="col-md-1 control-label">班主任ID</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="deanId" placeholder="班主任ID">
+                        <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                        <div class="alert alert-info hint" role="alert"></div>
+                    </div>
+                    <label for="teacherId" class="col-md-1 control-label">辅导员ID</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="teacherId" placeholder="辅导员ID">
+                        <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                        <div class="alert alert-info hint" role="alert"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="monitorId" class="col-md-1 control-label">班长ID</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="monitorId" placeholder="班长ID">
+                        <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                        <div class="alert alert-info hint" role="alert"></div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-md-offset-4">
+                    <button type="button" class="btn btn-info" id="formSubmit">点击提交</button>
+                </div>
+            </form>
+        </div>
+        <script src="/public/jquery-3.3.1.min.js"></script>
+        <script src="/public/layer/layer.js"></script>
+        <script src="/public/search.js"></script>
+        <script>
+            $('#upload').after('<input type="file" id="load_xls" name="file" style="display:none" onchange ="uploadFile()">');
+            $('#upload').click(function(){
+                document.getElementById("load_xls").click();
+            });
+            function uploadFile() {
+                var myform = new FormData();
+                myform.append('file',$('#load_xls')[0].files[0]);
+                $.ajax({
+                    url: "/file",
+                    type: "POST",
+                    data: myform,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error:function(data){
+                        console.log(data)
+                    }
+                });
+            }
+            //提交接口
+            $("#formSubmit").click(function() {
+                var classId = $("#classId").val();
+                var className = $("#className").val();
+                var deanId = $("#deanId").val();
+                var teacherId = $("#teacherId").val();
+                var monitorId = $("#monitorId").val();
+                if(!(classId && className && deanId && teacherId && monitorId)) {
+                    layer.msg("表单内容不能有空！",{icon:2});
+                    return;
+                }
+                $.ajax({
+                    url:'/class/add',
+                    method: 'post',
+                    data: {
+                        classId : classId,
+                        className : className,
+                        deanId : deanId,
+                        teacherId : teacherId,
+                        monitorId : monitorId
+                    },
+                    success: function(res){
+                        if(res.code == 0) {  //提交成功，添加班级成功
+                            layer.msg('添加班级成功',{icon:1});
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2500);
+                        } else {        //失败，返回失败信息
+                            layer.msg(res.msg,{icon:2});
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

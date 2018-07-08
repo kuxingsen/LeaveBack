@@ -1,0 +1,123 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>后台管理</title>
+        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/public/css/main.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">后台管理</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">主页</a></li>
+                        <li class="active"><a href="/add">添加班级</a></li>
+                        <li><a href="/show">请假记录</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="content">
+                <div class="page-header">
+                    <h1>修改班级 <small id="classId">未找到班级,请重试</small></h1>
+                </div>
+                <form class="form-horizontal">
+                        <div class="col-md-8 form-group">
+                            <label for="className" class="control-label">班级名称</label>
+                            <div>
+                                <input type="text" class="form-control" id="className" placeholder="班级名称">
+                            </div>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <label for="deanId" class="control-label">班主任ID</label>
+                            <div>
+                                <input type="text" class="form-control" id="deanId" placeholder="班主任ID">
+                                <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                                <div class="alert alert-info hint" role="alert"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <label for="teacherId" class="control-label">辅导员ID</label>
+                            <div>
+                                <input type="text" class="form-control" id="teacherId" placeholder="辅导员ID">
+                                <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                                <div class="alert alert-info hint" role="alert"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <label for="monitorId" class="control-label">班长ID</label>
+                            <div>
+                                <input type="text" class="form-control" id="monitorId" placeholder="班长ID">
+                                <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                                <div class="alert alert-info hint" role="alert"></div>
+                            </div>
+                        </div>  
+                    <div class="col-md-12 col-md-offset-4">
+                        <button type="button" class="btn btn-info" id="formSubmit">点击提交</button>
+                    </div>
+                </form>
+        </div>
+        <script src="/public/jquery-3.3.1.min.js"></script>
+        <script src="/public/layer/layer.js"></script>
+        <script src="/public/search.js"></script>
+        <script>
+            //分割url 
+            var classID = window.location.search.slice(3);
+            $.ajax({
+                url: '/getClass',
+                method: 'get',
+                data: { classId: classID},
+                success: function(res) {
+                    if(res.code == 0) {
+                        $("#classId").text(classID);
+                        $('#className').val(res.className);
+                        $('#deanId').val(res.deanId);
+                        $('#deanId').nextAll().eq(1).text(res.deanName).show();
+                        $('#teacherId').val(res.teacherId);
+                        $('#teacherId').nextAll().eq(1).text(res.deanName).show();
+                        $('#monitorId').val(res.monitorId);
+                        $('#monitorId').nextAll().eq(1).text(res.deanName).show();
+                    } else {      //查询失败
+                        layer.msg(res.msg,{icon:2});
+                    }
+                }
+            });
+            $("#formSubmit").click(function() {
+                var classId = $("#classId").text();
+                var className = $("#className").val();
+                var deanId = $("#deanId").val();
+                var teacherId = $("#teacherId").val();
+                var monitorId = $("#monitorId").val();
+                if(!(classId && className && deanId && teacherId && monitorId)) {
+                    layer.msg("表单内容不能有空！",{icon:2});
+                    return;
+                }
+                $.ajax({
+                    url:'/class/modify',
+                    method: 'post',
+                    data: {
+                        classId : classId,
+                        className : className,
+                        deanId : deanId,
+                        teacherId : teacherId,
+                        monitorId : monitorId
+                    },
+                    success: function(res){
+                        if(res.code == 0) {  //提交成功，添加班级成功
+                            layer.msg('修改班级成功',{icon:1});
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2500);
+                        } else {        //失败，返回失败信息
+                            layer.msg(res.msg,{icon:2});
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
