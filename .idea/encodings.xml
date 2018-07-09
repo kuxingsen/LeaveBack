@@ -4,13 +4,11 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/AllInterceptor.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/ClassController.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/LoginController.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/ViewsController.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/AppContent.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/ClassTable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Information.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Student.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/student/FormHandle.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/student/GetMyLeave.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/HTTPSimple.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/User.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml" charset="GBK" />
@@ -31,7 +29,6 @@
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpcore-4.4.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpmime-4.4.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/json-lib-2.4-jdk15.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/lib" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/app.js" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/node_modules" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/package-lock.json" charset="GBK" />

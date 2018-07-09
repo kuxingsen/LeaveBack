@@ -9,10 +9,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("leave")
 public class LeaveController {
-    @RequestMapping("/show")
-    public String show()
-    {
-        System.out.println("请假记录");
-        return "show";
-    }
 }

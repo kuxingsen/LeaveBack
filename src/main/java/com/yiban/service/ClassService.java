@@ -1,7 +1,7 @@
 package com.yiban.service;
 
-import com.yiban.dto.ClassResult;
-import com.yiban.dto.nameResult.DeanNameResult;
+import com.yiban.dto.AClassResult;
+import com.yiban.dto.AllClassResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.mapper.ClassMapper;
 import com.yiban.utils.yibanApi.User;
@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,17 +37,24 @@ public class ClassService {
     private ClassMapper classMapper;
     private Logger logger = LoggerFactory.getLogger(ClassService.class);
 
-    public ClassResult searchAllClass()
+    public AllClassResult searchAllClass()
     {
         List<ClassTable> classTableList = classMapper.searchAllClass();
-        ClassResult classResult = new ClassResult();
-        classResult.setTotal(classTableList.size());
-        classResult.setRows(classTableList);
-        return classResult;
+        AllClassResult allClassResult = new AllClassResult();
+        allClassResult.setTotal(classTableList.size());
+        allClassResult.setRows(classTableList);
+        return allClassResult;
     }
-    public ClassTable searchClassById(String classId)
+    public AClassResult searchClassById(String classId)
     {
-        return classMapper.searchClassById(classId);
+        AClassResult aClassResult = classMapper.searchClassById(classId);
+        if(aClassResult != null)
+        {
+            aClassResult.setCode(0);
+        }else {
+            aClassResult.setCode(-1);
+        }
+        return aClassResult;
     }
 
     public String getName(String deanId, String access_token) {
@@ -134,14 +140,24 @@ public class ClassService {
 
     }
 
-    public int addClass(ClassTable classTable,String access_token) {
+    /**
+     * 补全classTable的名字属性
+     * @param classTable
+     * @param access_token
+     * @return
+     */
+    public ClassTable setClassTableName(ClassTable classTable,String access_token)
+    {
         String teacherId= classTable.getTeacherYibanId();
         String monitorId = classTable.getMonitorId();
         String deanId = classTable.getDeanYiban_id();
         classTable.setTeacherName(getName(teacherId,access_token));
         classTable.setDeanName(getName(deanId,access_token));
         classTable.setMonitorName(getName(monitorId,access_token));
-
+        return classTable;
+    }
+    public int addClass(ClassTable classTable) {
+        System.out.println(classTable);
         return classMapper.addClass(classTable);
     }
 

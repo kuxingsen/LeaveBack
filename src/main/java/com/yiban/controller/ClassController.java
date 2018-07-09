@@ -1,6 +1,7 @@
 package com.yiban.controller;
 
-import com.yiban.dto.ClassResult;
+import com.yiban.dto.AClassResult;
+import com.yiban.dto.AllClassResult;
 import com.yiban.dto.IsSuccessResult;
 import com.yiban.dto.nameResult.DeanNameResult;
 import com.yiban.dto.nameResult.MonitorNameResult;
@@ -8,13 +9,6 @@ import com.yiban.dto.nameResult.TeacherNameResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.service.ClassService;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import sun.security.x509.IssuerAlternativeNameExtension;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Dictionary;
-import java.util.List;
 
 /**
  * Created by Kuexun on 2018/7/7.
@@ -47,11 +31,18 @@ public class ClassController {
     private ClassService classService;
     private Logger logger = LoggerFactory.getLogger(ClassController.class);
 
-    @RequestMapping("/add")
-    public String add()
-    {
-        System.out.println("添加班级");
-        return "add";
+
+    @RequestMapping("/gettable")
+    @ResponseBody
+    public AllClassResult getTable(){
+        System.out.println("获取表格");
+        return classService.searchAllClass();
+    }
+    @RequestMapping("/getClass")
+    @ResponseBody
+    public AClassResult getAClass(String classId){
+        System.out.println("获取班级"+classId);
+        return classService.searchClassById(classId);
     }
     @RequestMapping("/addClass")
     @ResponseBody
@@ -61,7 +52,8 @@ public class ClassController {
         System.out.println(classTable);
         IsSuccessResult msg = null;
         String access_token = (String) session.getAttribute("accessToken");
-        int r = classService.addClass(classTable,access_token);
+        classTable = classService.setClassTableName(classTable,access_token);
+        int r = classService.addClass(classTable);
         if(r > 0){
             msg = new IsSuccessResult(0,"添加成功");
         }else {
@@ -131,11 +123,6 @@ public class ClassController {
         }
         return teacherNameResult;
     }
-
-    @RequestMapping("/modify")
-    public String modify() {
-        return "modify";
-    }
     @RequestMapping("/modifyClass")
     @ResponseBody
     public IsSuccessResult modifyClass(ClassTable classTable,HttpSession session)
@@ -144,6 +131,8 @@ public class ClassController {
         System.out.println(classTable);
         IsSuccessResult msg = null;
         //前端未完善
+        String access_token = (String) session.getAttribute("accessToken");
+        classTable = classService.setClassTableName(classTable,access_token);
         int r = classService.modifyClass(classTable);
         if(r > 0){
             msg = new IsSuccessResult(0,"修改成功");
@@ -153,7 +142,7 @@ public class ClassController {
         return msg;
     }
 
-    @RequestMapping("/delete/{id}")
+    @RequestMapping("/deleteClass/{id}")
     @ResponseBody
     public IsSuccessResult deleteClass(@PathVariable("id") String classId)
     {

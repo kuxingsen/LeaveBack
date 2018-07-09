@@ -16,8 +16,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="/views/index">主页</a></li>
-                        <li><a href="/class/add">添加班级</a></li>
-                        <li><a href="/leave/show">请假记录</a></li>
+                        <li><a href="/views/add">添加班级</a></li>
+                        <li><a href="/views/show">请假记录</a></li>
                     </ul>
                 </div>
             </div>
@@ -34,7 +34,7 @@
             window.operateEvents = {
                 "click #editButton":function (e,value,row,index)	{
                     // console.log();   //获取班级id值
-                    window.location.href='/modify?q='+ $(this).parent().prevAll().last().text(); 
+                    window.location.href='/views/modify.html?q='+ $(this).parent().prevAll().last().text();
                 },
                 "click #deleteButton":function(e,value,row,index) {
                     var classname = $(this).parent().prevAll().eq(6).text();    //获取班级名称
@@ -44,7 +44,7 @@
                         }, function(){
                             $.ajax({
                                 method:'delete',
-                                url: '/class/delete/'+classid,
+                                url: '/class/deleteClass/'+classid,
                                 success: function(){
                                     layer.msg('删除成功');
                                     // layer.closeAll('dialog');  //关闭弹窗
@@ -56,7 +56,7 @@
 
             $("#table").bootstrapTable({ // 对应table标签的id
                 method: "get",
-                url: "gettable", // 获取表格数据的url
+                url: "/class/gettable", // 获取表格数据的url
                 contentType: "application/x-www-form-urlencoded",
                 search:true,
                 cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true

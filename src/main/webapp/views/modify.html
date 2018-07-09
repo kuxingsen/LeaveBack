@@ -10,13 +10,13 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="/">后台管理</a>
+                    <a class="navbar-brand" href="/views/index">后台管理</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="/">主页</a></li>
-                        <li class="active"><a href="/add">添加班级</a></li>
-                        <li><a href="/show">请假记录</a></li>
+                        <li><a href="/views/index">主页</a></li>
+                        <li class="active"><a href="/views/add">添加班级</a></li>
+                        <li><a href="/views/show">请假记录</a></li>
                     </ul>
                 </div>
             </div>
@@ -68,17 +68,17 @@
             //分割url 
             var classID = window.location.search.slice(3);
             $.ajax({
-                url: '/getClass',
+                url: '/class/getClass',
                 method: 'get',
                 data: { classId: classID},
                 success: function(res) {
-                    if(res.total == 0) {
+                    if(res.code == 0) {
                         $("#classId").text(classID);
                         $('#className').val(res.className);
                         $('#deanId').val(res.deanId);
-                        $('#deanId').nextAll().eq(1).text(res.monitorName).show();
+                        $('#deanId').nextAll().eq(1).text(res.deanName).show();
                         $('#teacherId').val(res.teacherId);
-                        $('#teacherId').nextAll().eq(1).text(res.monitorName).show();
+                        $('#teacherId').nextAll().eq(1).text(res.teacherName).show();
                         $('#monitorId').val(res.monitorId);
                         $('#monitorId').nextAll().eq(1).text(res.monitorName).show();
                     } else {      //查询失败
@@ -97,13 +97,13 @@
                     return;
                 }
                 $.ajax({
-                    url:'/class/modify',
+                    url:'/class/modifyClass',
                     method: 'post',
                     data: {
                         classId : classId,
                         className : className,
-                        deanId : deanId,
-                        teacherId : teacherId,
+                        deanYiban_id : deanId,
+                        teacherYibanId : teacherId,
                         monitorId : monitorId
                     },
                     success: function(res){

@@ -16,6 +16,17 @@
         <result column="monitor" property="monitorId"/>
         <result column="monitor_name" property="monitorName"/>
     </resultMap>
+
+    <resultMap id="aClassResult" type="com.yiban.dto.AClassResult">
+        <id column="class_id" property="classId"/>
+        <result column="class_name" property="className"/>
+        <result column="teacher_yiban_id" property="teacherId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="Dean_yiban_id" property="deanId"/>
+        <result column="dean_name" property="deanName"/>
+        <result column="monitor" property="monitorId"/>
+        <result column="monitor_name" property="monitorName"/>
+    </resultMap>
     <!--<select id="searchTeacherByStudentId" resultType="java.lang.String">
         SELECT teacher_yiban_id FROM class WHERE class_id = #{id}
     </select>
@@ -29,17 +40,17 @@
     <select id="searchAllClass" resultMap="classTable">
         select * from class
     </select>
-    <select id="searchClassById" resultMap="classTable">
+    <select id="searchClassById" resultMap="aClassResult">
         select * from class WHERE class_id=#{classId}
     </select>
 
     <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
-        INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{monitorName},#{monitorId},#{monitorName})
+        INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitorId},#{monitorName})
     </insert>
 
     <update id="modifyClass" parameterType="com.yiban.entity.ClassTable">
         UPDATE class SET class_name=#{className},teacher_yiban_id=#{teacherYibanId},teacher_name=#{teacherName},
-            Dean_yiban_id=#{deanYiban_id},monitor_name=#{monitorName},monitor=#{monitorId},monitor_name=#{monitorName} WHERE class_id=#{classId}
+            Dean_yiban_id=#{deanYiban_id},dean_name=#{deanName},monitor=#{monitorId},monitor_name=#{monitorName} WHERE class_id=#{classId}
     </update>
 
     <delete id="deleteClass" >

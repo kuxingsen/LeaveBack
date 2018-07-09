@@ -1,5 +1,6 @@
 package com.yiban.mapper;
 
+import com.yiban.dto.AClassResult;
 import com.yiban.entity.ClassTable;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,7 @@ import java.util.List;
 public interface ClassMapper {
     List<ClassTable> searchAllClass();
 
-    ClassTable searchClassById(@Param("classId") String classId);
+    AClassResult searchClassById(@Param("classId") String classId);
 
 
 
