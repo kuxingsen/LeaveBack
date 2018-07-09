@@ -11,13 +11,13 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index">后台管理</a>
+                    <a class="navbar-brand" href="/views/index">后台管理</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index">主页</a></li>
-                        <li><a href="add">添加班级</a></li>
-                        <li><a href="show">请假记录</a></li>
+                        <li class="active"><a href="/views/index">主页</a></li>
+                        <li><a href="/class/add">添加班级</a></li>
+                        <li><a href="/leave/show">请假记录</a></li>
                     </ul>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                         }, function(){
                             $.ajax({
                                 method:'delete',
-                                url: '/class',
+                                url: '/class/delete',
                                 data: {id: classid},
                                 success: function(){
                                     layer.msg('删除成功');
@@ -57,7 +57,7 @@
 
             $("#table").bootstrapTable({ // 对应table标签的id
                 method: "get",
-                url: "/gettable", // 获取表格数据的url
+                url: "gettable", // 获取表格数据的url
                 contentType: "application/x-www-form-urlencoded",
                 search:true,
                 cache: false, // 设置为 false 禁用 AJAX 数据缓存， 默认为true
@@ -73,53 +73,53 @@
                 sidePagination: 'server', // 设置为服务器端分页
                 columns: [
                     {
-                        field: 'classid', // 返回json数据中的name
+                        field: 'classId', // 返回json数据中的name
                         title: '班级id', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle' // 上下居中
-                    },{
+                    /*},{
                         field: 'classname', // 返回json数据中的name
                         title: '班级', // 表格表头显示文字
                         align: 'center', // 左右居中
-                        valign: 'middle' // 上下居中
+                        valign: 'middle' // 上下居中*/
                     },{
-                        field: 'deanid', // 返回json数据中的name
+                        field: 'deanYiban_id', // 返回json数据中的name
                         title: '班主任id', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle' // 上下居中
-                    },{
+                    /*},{
                         field: 'deanname', // 返回json数据中的name
                         title: '班主任', // 表格表头显示文字
                         align: 'center', // 左右居中
-                        valign: 'middle' // 上下居中
+                        valign: 'middle' // 上下居中*/
                     },{
-                        field: 'teacherid', // 返回json数据中的name
+                        field: 'teacherYibanId', // 返回json数据中的name
                         title: '辅导员id', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle' // 上下居中
-                    },{
+                    /*},{
                         field: 'teachername', // 返回json数据中的name
                         title: '辅导员', // 表格表头显示文字
                         align: 'center', // 左右居中
-                        valign: 'middle' // 上下居中
+                        valign: 'middle' // 上下居中*/
                     },{
-                        field: 'monitorid', // 返回json数据中的name
+                        field: 'monitor', // 返回json数据中的name
                         title: '班长id', // 表格表头显示文字
                         align: 'center', // 左右居中
                         valign: 'middle' // 上下居中
-                    },{
+                   /* },{
                         field: 'monitorname', // 返回json数据中的name
                         title: '班长', // 表格表头显示文字
                         align: 'center', // 左右居中
-                        valign: 'middle' // 上下居中
+                        valign: 'middle' // 上下居中*/
                     },{  
                         // field : 'op',        
                         title : '操作', 
                         align:'center',
                         events: operateEvents,
                         formatter : function(value, row, index) {
-                            var strHtml = '<button type="button" class="btn btn-info btn-xs" id="editButton">修改</button>\
-                                <button type="button" class="btn btn-danger btn-xs" id="deleteButton">删除</button>';
+                            var strHtml = '<button type="button" class="btn btn-info btn-xs" id="editButton">修改</button>'+
+                                '<button type="button" class="btn btn-danger btn-xs" id="deleteButton">删除</button>';
                             return strHtml;
                         }        
                     }

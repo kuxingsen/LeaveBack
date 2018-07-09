@@ -10,7 +10,7 @@ $("#deanId").on('input',function() {
     } else {
         $.ajax({
             method: 'get',
-            url: '/getDean',
+            url: '/class/getDean',
             data: { deanId: $(this).val()},
             success: function(res) {
                 if(res.code == 0) {   //正常返回，查找成功
@@ -35,10 +35,10 @@ $("#teacherId").on('input',function() {
     } else {
         $.ajax({
             method: 'get',
-            url: '/getDean',
+            url: '/class/getDean',
             data: { deanId: $(this).val()},
             success: function(res) {
-                if(res.code == 0) {   //正常返回，查找成功
+                if(res.code === 0) {   //正常返回，查找成功
                     brother.eq(0).hide();
                     brother.eq(1).text(res.deanName).show();
                 } else {     //错误返回， 没找到该人员

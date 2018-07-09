@@ -11,13 +11,13 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index">后台管理</a>
+                    <a class="navbar-brand" href="/views/index">后台管理</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="index">主页</a></li>
-                        <li class="active"><a href="add">添加班级</a></li>
-                        <li><a href="show">请假记录</a></li>
+                        <li><a href="/views/index">主页</a></li>
+                        <li class="active"><a href="/class/add">添加班级</a></li>
+                        <li><a href="/leave/show">请假记录</a></li>
                     </ul>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                 var myform = new FormData();
                 myform.append('file',$('#load_xls')[0].files[0]);
                 $.ajax({
-                    url: "/file",
+                    url: "/class/file",
                     type: "POST",
                     data: myform,
                     contentType: false,
