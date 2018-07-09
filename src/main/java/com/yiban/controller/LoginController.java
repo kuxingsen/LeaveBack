@@ -1,6 +1,7 @@
 package com.yiban.controller;
 
 import cn.yiban.open.Authorize;
+import com.yiban.dto.ClassResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.service.ClassService;
 import net.sf.json.JSONObject;
@@ -36,7 +37,7 @@ public class LoginController {
 
     @RequestMapping("/gettable")
     @ResponseBody
-    public List<ClassTable> getTable(){
+    public ClassResult getTable(){
         System.out.println("获取表格");
         return classService.searchAllClass();
     }

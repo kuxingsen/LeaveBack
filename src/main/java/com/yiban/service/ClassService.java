@@ -1,12 +1,9 @@
 package com.yiban.service;
 
-import cn.yiban.open.Authorize;
-import com.yiban.controller.ClassController;
 import com.yiban.dto.ClassResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.mapper.ClassMapper;
 import com.yiban.utils.yibanApi.User;
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -19,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static com.yiban.entity.AppContent.*;
 /**
  * Created by Kuexun on 2018/7/8.
  */
@@ -42,9 +37,13 @@ public class ClassService {
     private ClassMapper classMapper;
     private Logger logger = LoggerFactory.getLogger(ClassService.class);
 
-    public List<ClassTable> searchAllClass()
+    public ClassResult searchAllClass()
     {
-        return classMapper.searchAllClass();
+        List<ClassTable> classTableList = classMapper.searchAllClass();
+        ClassResult classResult = new ClassResult();
+        classResult.setTotal(classTableList.size());
+        classResult.setRows(classTableList);
+        return classResult;
     }
     public ClassTable searchClassById(String classId)
     {
@@ -52,19 +51,20 @@ public class ClassService {
     }
 
     public ClassResult getDean(String deanId, HttpSession session) {
-        String access_token = (String) session.getAttribute("accessToken");
+        /*String access_token = (String) session.getAttribute("accessToken");
         System.out.println(access_token);
         JSONObject object = JSONObject.fromObject(User.other("10967192",access_token));
         System.out.println(object);
         ClassResult classResult = new ClassResult();
         if(object.get("status").equals("success")){
-            classResult.setCode(1);
+            classResult.setTotal(1);
             String yb_username = (String) (JSONObject.fromObject(object.get("info"))).get("yb_username");
-            classResult.setDeanName(yb_username);
+            classResult.setMonitorName(yb_username);
         }else {
-            classResult.setCode(0);
+            classResult.setTotal(0);
         }
-        return classResult;
+        return classResult;*/
+        return null;
     }
 
     public boolean addClassList(List<ClassTable> classTableList) {
@@ -118,7 +118,7 @@ public class ClassService {
                         classTable.setTeacherYibanId(row.getCell(4).getStringCellValue());
                         classTable.setTeacherName(row.getCell(5).getStringCellValue());
 
-                        classTable.setMonitor(row.getCell(6).getStringCellValue());
+                        classTable.setMonitorId(row.getCell(6).getStringCellValue());
                         classTable.setMonitorName(row.getCell(7).getStringCellValue());
                         System.out.println(classTable);
                         classTableList.add(classTable);

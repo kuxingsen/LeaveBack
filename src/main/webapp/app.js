@@ -36,7 +36,7 @@ app.get('/getClass',function(req,res) {
 });
 
 app.get('/getDean',function(req,res) {
-    if(req.query.deanId == 123456)
+    if(req.query.deanId === 123456)
         res.send({code:0,deanName: '胡歌'});
     else 
         res.send({code:1,deanName: '吴亦凡'});

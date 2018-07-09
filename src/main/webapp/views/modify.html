@@ -72,15 +72,15 @@
                 method: 'get',
                 data: { classId: classID},
                 success: function(res) {
-                    if(res.code == 0) {
+                    if(res.total == 0) {
                         $("#classId").text(classID);
                         $('#className').val(res.className);
                         $('#deanId').val(res.deanId);
-                        $('#deanId').nextAll().eq(1).text(res.deanName).show();
+                        $('#deanId').nextAll().eq(1).text(res.monitorName).show();
                         $('#teacherId').val(res.teacherId);
-                        $('#teacherId').nextAll().eq(1).text(res.deanName).show();
+                        $('#teacherId').nextAll().eq(1).text(res.monitorName).show();
                         $('#monitorId').val(res.monitorId);
-                        $('#monitorId').nextAll().eq(1).text(res.deanName).show();
+                        $('#monitorId').nextAll().eq(1).text(res.monitorName).show();
                     } else {      //查询失败
                         layer.msg(res.msg,{icon:2});
                     }
@@ -107,7 +107,7 @@
                         monitorId : monitorId
                     },
                     success: function(res){
-                        if(res.code == 0) {  //提交成功，添加班级成功
+                        if(res.total == 0) {  //提交成功，添加班级成功
                             layer.msg('修改班级成功',{icon:1});
                             setTimeout(function() {
                                 location.reload();

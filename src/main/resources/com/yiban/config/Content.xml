@@ -15,7 +15,7 @@
         <result column="phone" property="phone"/>
         <result column="status" property="status"/>
         <result column="file_path" property="filePath"/>
-        <result column="code" property="code"/>
+        <result column="total" property="total"/>
         <association property="student" columnPrefix="student_"
                      resultMap="com.yiban.mapper.StudentMapper.student"/>
     </resultMap>
@@ -27,7 +27,7 @@
     <!--添加请假信息 -->
     <insert id="addContent">
 		INSERT IGNORE INTO information VALUES
-		(0,#{studentId},#{beginTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{number},#{reason},#{phone},#{status},#{filePath},#{code}
+		(0,#{studentId},#{beginTime,jdbcType=TIMESTAMP},#{endTime,jdbcType=TIMESTAMP},#{number},#{reason},#{phone},#{status},#{filePath},#{total}
 		)
 	</insert>
     <!--更改状态之前先查询status的值-->
@@ -36,7 +36,7 @@
 	</select>
     <!--更新请假信息 -->
     <update id="updateLeave">
-		UPDATE information SET status = #{status}, code = #{code} WHERE id = #{id}
+		UPDATE information SET status = #{status}, total = #{total} WHERE id = #{id}
 	</update>
 
     <update id="updateLeaveWithoutCode">
@@ -58,7 +58,7 @@
 	</select>
     <!--查找班长的易班id -->
     <select id="selectMonitor" resultType="String">
-		SELECT c.monitor FROM class c
+		SELECT c.monitorId FROM class c
 		WHERE c.class_id = LEFT((SELECT a.student_id FROM information a WHERE a.id
 		= #{id}),10)
 	</select>
@@ -70,7 +70,7 @@
     </select>
 
     <select id="selectInformation" parameterType="long" resultMap="information">
-		 SELECT a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.code,
+		 SELECT a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.total,
 		s.student_id student_student_id, s.name student_name, s.department
 		student_department, s.class_name student_class_name
         FROM information a
@@ -83,7 +83,7 @@
     <select id="selectLeaves" parameterType="java.lang.String"
             resultMap="information">
 		SELECT
-		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.code,
+		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.total,
 		s.student_id student_student_id, s.name student_name, s.department
 		student_department, s.class_name student_class_name
 		FROM information a
@@ -95,7 +95,7 @@
 
     <select id="selectAll" resultMap="information">
 		SELECT
-		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.code,
+		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.total,
 		s.student_id student_student_id, s.name student_name, s.department
 		student_department, s.class_name student_class_name
 		FROM information a
@@ -108,14 +108,14 @@
 
     <select id="myLeaves" resultMap="information" parameterType="java.lang.String">
 		SELECT
-		a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.code
+		a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.total
 		FROM information a WHERE a.student_id = #{myId}
 		ORDER BY a.id DESC
 	</select>
 
     <select id="selectByType" resultMap="information">
 		SELECT
-		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.code
+		a.id,a.student_id,a.begin_time,a.end_time,a.number,a.reason,a.phone,a.status,a.file_path,a.total
 		FROM information a
 		LEFT JOIN class b ON LEFT(a.student_id,10) = b.class_id AND
 		b.teacher_yiban_id = #{id} OR b.Dean_yiban_id = #{id}

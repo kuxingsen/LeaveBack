@@ -15,19 +15,12 @@ public class ClassTable implements Serializable {
     private String teacherYibanId;
     private String teacherName;
     //班级班长的ID
-    private String monitor;
+    private String monitorId;
     private String monitorName;
     //班主任的ID
     private  String deanYiban_id;
     private  String deanName;
 
-    public ClassTable(String classId, String teacherYibanId, String monitor, String deanYiban_id) {
-		super();
-		this.classId = classId;
-		this.teacherYibanId = teacherYibanId;
-		this.monitor = monitor;
-		this.deanYiban_id=deanYiban_id;
-	}
 
     public ClassTable() {
     }
@@ -39,7 +32,7 @@ public class ClassTable implements Serializable {
                 ", className='" + className + '\'' +
                 ", teacherYibanId='" + teacherYibanId + '\'' +
                 ", teacherName='" + teacherName + '\'' +
-                ", monitor='" + monitor + '\'' +
+                ", monitorId='" + monitorId + '\'' +
                 ", monitorName='" + monitorName + '\'' +
                 ", deanYiban_id='" + deanYiban_id + '\'' +
                 ", deanName='" + deanName + '\'' +
@@ -82,12 +75,12 @@ public class ClassTable implements Serializable {
         this.teacherName = teacherName;
     }
 
-    public String getMonitor() {
-        return monitor;
+    public String getMonitorId() {
+        return monitorId;
     }
 
-    public void setMonitor(String monitor) {
-        this.monitor = monitor;
+    public void setMonitorId(String monitorId) {
+        this.monitorId = monitorId;
     }
 
     public String getMonitorName() {
