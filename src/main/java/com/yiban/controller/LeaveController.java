@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by Kuexun on 2018/7/7.
  */
 @Controller
-@RequestMapping("views")
+@RequestMapping("leave")
 public class LeaveController {
     @RequestMapping("/show")
     public String show()

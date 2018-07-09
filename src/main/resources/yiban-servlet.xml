@@ -79,12 +79,12 @@
 
 
 	<!--注册拦截器 -->
-	<!--<mvc:interceptors>-->
-		<!--<mvc:interceptor>-->
-			<!--<mvc:mapping path="com.yiban.controller" />-->
-			<!--<bean class="com.yiban.controller.AllInterceptor" />-->
-		<!--</mvc:interceptor>-->
-	<!--</mvc:interceptors>-->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.yiban.controller.AllInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 	<!--文件上传处理 -->
 	<bean id="multipartResolver"

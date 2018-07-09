@@ -6,12 +6,15 @@
            flushInterval="60000"
            size="512"
            readOnly="true"/>
-    <!--
     <resultMap id="classTable" type="com.yiban.entity.ClassTable">
         <id column="class_id" property="classId"/>
         <result column="teacher_yiban_id" property="teacherYibanId"/>
+        <result column="teacher_name" property="teacherName"/>
+        <result column="class_name" property="className"/>
+        <result column="dean_name" property="deanName"/>
+        <result column="monitor_name" property="monitorName"/>
     </resultMap>
-    <select id="searchTeacherByStudentId" resultType="java.lang.String">
+    <!--<select id="searchTeacherByStudentId" resultType="java.lang.String">
         SELECT teacher_yiban_id FROM class WHERE class_id = #{id}
     </select>
     <select id="searchDeanByStudentId" resultType="java.lang.String">
@@ -19,6 +22,16 @@
     </select>
     <select id="searchTeacher" resultType="java.lang.String">
         SELECT class_id FROM class WHERE teacher_yiban_id =#{id} OR Dean_yiban_id= #{id}
+    </select>-->
+
+    <select id="searchAllClass" resultMap="classTable">
+        select * from class
     </select>
-    -->
+    <select id="searchClassById" resultMap="classTable">
+        select * from class WHERE class_id=#{classId}
+    </select>
+
+    <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
+        INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitor},#{monitorName})
+    </insert>
 </mapper>

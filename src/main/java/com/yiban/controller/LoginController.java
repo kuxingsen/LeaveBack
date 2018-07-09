@@ -1,14 +1,20 @@
 package com.yiban.controller;
 
 import cn.yiban.open.Authorize;
+import com.yiban.entity.ClassTable;
+import com.yiban.service.ClassService;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Kuexun on 2018/7/7.
@@ -17,39 +23,22 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("views")
 public class LoginController {
 
-    private static final String appKey = "ba040fceea1043db";
-    private static final String appSecret = "c5e8b3715ee3ee7ca68d315fe59f1113";
-    private static final String callbackUrl = "http://localhost:8080/views/index";
 
+    @Autowired
+    private ClassService classService;
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping("/index")
-    public String index(HttpServletRequest request) {
-        System.out.println("涓婚〉");
-        //鎺堟潈楠岃瘉
-        Authorize authorize = new Authorize(appKey, appSecret);
-        HttpSession session = request.getSession();
-        String code = request.getParameter("code");
-        logger.info("鑾峰彇鐨刢ode锛歿}", code);
-        if (code == null || "".equals(code.trim())) {
-            String url = authorize.forwardurl(callbackUrl, "test", Authorize.DISPLAY_TAG_T.WEB);
-            return "redirect:" + url;
-        } else {
-            JSONObject object = JSONObject.fromObject(authorize.querytoken(code, callbackUrl));
-            logger.info("鎺堟潈鍚庣殑toke锛歿}", object);
-            if (object.has("access_token")) {
-                String userId = object.getString("userid");
-                if(userId.equals("8118009")){
-                    String accessToken = object.getString("access_token");
-                    session.setAttribute("yiban_id", userId);
-                    session.setAttribute("accessToken", accessToken);
-                    return "index";
-                }
-                return "/false";
-            } else {
-                return "/false";
-            }
-        }
+    public String index() {
+        System.out.println("首页");
+        return "index";
+    }
+
+    @RequestMapping("/gettable")
+    @ResponseBody
+    public List<ClassTable> getTable(){
+        System.out.println("获取表格");
+        return classService.searchAllClass();
     }
 
 }
