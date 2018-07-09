@@ -1,6 +1,7 @@
 package com.yiban.controller;
 
 import com.yiban.dto.ClassResult;
+import com.yiban.dto.IsSuccessResult;
 import com.yiban.dto.nameResult.DeanNameResult;
 import com.yiban.dto.nameResult.MonitorNameResult;
 import com.yiban.dto.nameResult.TeacherNameResult;
@@ -45,17 +46,45 @@ public class ClassController {
     private Logger logger = LoggerFactory.getLogger(ClassController.class);
 
     @RequestMapping("/add")
-    public String addClass()
+    public String add()
     {
         System.out.println("添加班级");
         return "add";
     }
+    @RequestMapping("/addClass")
+    @ResponseBody
+    public IsSuccessResult addClass(ClassTable classTable,HttpSession session)
+    {
+        System.out.println("添加班级");
+        System.out.println(classTable);
+        IsSuccessResult msg = null;
+        String access_token = (String) session.getAttribute("accessToken");
+        int r = classService.addClass(classTable,access_token);
+        if(r > 0){
+            msg = new IsSuccessResult(0,"添加成功");
+        }else {
+            msg = new IsSuccessResult(-1,"添加失败");
+        }
+        return msg;
+    }
+
+    @RequestMapping("/file")
+    @ResponseBody
+    public IsSuccessResult readExcel(@RequestParam(value = "file", required = false) MultipartFile file) {
+        if (file != null && !file.isEmpty()) {
+            classService.readExcel(file);
+            return new IsSuccessResult(0,"成功导入数据");
+        }
+        return new IsSuccessResult(-1,"文件不存在或文件为空");
+    }
+
     @RequestMapping("/getDean")
     @ResponseBody
     public DeanNameResult getDean(String deanId, HttpSession session)
     {
         System.out.println("获得班主任姓名");
-        String name = classService.getName(deanId,session);
+        String access_token = (String) session.getAttribute("accessToken");
+        String name = classService.getName(deanId,access_token);
         DeanNameResult deanNameResult = new DeanNameResult();
         if(name == null)
         {
@@ -71,7 +100,8 @@ public class ClassController {
     public MonitorNameResult getMonitor(String deanId, HttpSession session)
     {
         System.out.println("获得班长姓名");
-        String name = classService.getName(deanId,session);
+        String access_token = (String) session.getAttribute("accessToken");
+        String name = classService.getName(deanId,access_token);
         MonitorNameResult monitorNameResult = new MonitorNameResult();
         if(name == null)
         {
@@ -87,7 +117,8 @@ public class ClassController {
     public TeacherNameResult getTeacher(String deanId, HttpSession session)
     {
         System.out.println("获得班主任姓名");
-        String name = classService.getName(deanId,session);
+        String access_token = (String) session.getAttribute("accessToken");
+        String name = classService.getName(deanId,access_token);
         TeacherNameResult teacherNameResult = new TeacherNameResult();
         if(name == null)
         {
@@ -99,10 +130,24 @@ public class ClassController {
         return teacherNameResult;
     }
 
-    @RequestMapping("/file")
-    public void readExcel(@RequestParam(value = "file", required = false) MultipartFile file) {
-            if (file != null && !file.isEmpty()) {
-                classService.readExcel(file);
-            }
+    @RequestMapping("/modify")
+    public String modify() {
+        return "modify";
+    }
+    @RequestMapping("/modifyClass")
+    @ResponseBody
+    public IsSuccessResult modifyClass(ClassTable classTable,HttpSession session)
+    {
+        System.out.println("添加班级");
+        System.out.println(classTable);
+        IsSuccessResult msg = null;
+        String access_token = (String) session.getAttribute("accessToken");
+        int r = classService.addClass(classTable,access_token);
+        if(r > 0){
+            msg = new IsSuccessResult(0,"添加成功");
+        }else {
+            msg = new IsSuccessResult(-1,"添加失败");
+        }
+        return msg;
     }
 }

@@ -51,8 +51,7 @@ public class ClassService {
         return classMapper.searchClassById(classId);
     }
 
-    public String getName(String deanId, HttpSession session) {
-        String access_token = (String) session.getAttribute("accessToken");
+    public String getName(String deanId, String access_token) {
         System.out.println(access_token);
         JSONObject object = JSONObject.fromObject(User.other(deanId,access_token));
         System.out.println(object);
@@ -133,5 +132,16 @@ public class ClassService {
             e.printStackTrace();
         }
 
+    }
+
+    public int addClass(ClassTable classTable,String access_token) {
+        String teacherId= classTable.getTeacherYibanId();
+        String monitorId = classTable.getMonitorId();
+        String deanId = classTable.getDeanYiban_id();
+        classTable.setTeacherName(getName(teacherId,access_token));
+        classTable.setDeanName(getName(deanId,access_token));
+        classTable.setMonitorName(getName(monitorId,access_token));
+
+        return classMapper.addClass(classTable);
     }
 }

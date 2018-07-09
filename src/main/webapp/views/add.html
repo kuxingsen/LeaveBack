@@ -102,13 +102,13 @@
                     return;
                 }
                 $.ajax({
-                    url:'/class/add',
+                    url:'/class/addClass',
                     method: 'post',
                     data: {
                         classId : classId,
                         className : className,
-                        deanId : deanId,
-                        teacherId : teacherId,
+                        deanYiban_id : deanId,
+                        teacherYibanId : teacherId,
                         monitorId : monitorId
                     },
                     success: function(res){

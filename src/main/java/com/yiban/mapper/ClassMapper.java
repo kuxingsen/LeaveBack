@@ -25,5 +25,5 @@ public interface ClassMapper {
     List<String> searchTeacher(String id);
 
 
-    void addClass(ClassTable c);
+    int addClass(ClassTable c);
 }
