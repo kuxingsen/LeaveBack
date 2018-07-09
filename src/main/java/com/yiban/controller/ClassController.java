@@ -1,6 +1,9 @@
 package com.yiban.controller;
 
 import com.yiban.dto.ClassResult;
+import com.yiban.dto.nameResult.DeanNameResult;
+import com.yiban.dto.nameResult.MonitorNameResult;
+import com.yiban.dto.nameResult.TeacherNameResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.service.ClassService;
 
@@ -49,11 +52,51 @@ public class ClassController {
     }
     @RequestMapping("/getDean")
     @ResponseBody
-    public ClassResult getDean(String deanId, HttpSession session)
+    public DeanNameResult getDean(String deanId, HttpSession session)
     {
         System.out.println("获得班主任姓名");
-        //readExcel();
-        return classService.getDean(deanId,session);
+        String name = classService.getName(deanId,session);
+        DeanNameResult deanNameResult = new DeanNameResult();
+        if(name == null)
+        {
+            deanNameResult.setCode(-1);
+        }else {
+            deanNameResult.setCode(0);
+            deanNameResult.setDeanName(name);
+        }
+        return deanNameResult;
+    }
+    @RequestMapping("/getMonitor")
+    @ResponseBody
+    public MonitorNameResult getMonitor(String deanId, HttpSession session)
+    {
+        System.out.println("获得班长姓名");
+        String name = classService.getName(deanId,session);
+        MonitorNameResult monitorNameResult = new MonitorNameResult();
+        if(name == null)
+        {
+            monitorNameResult.setCode(-1);
+        }else {
+            monitorNameResult.setCode(0);
+            monitorNameResult.setMonitorName(name);
+        }
+        return monitorNameResult;
+    }
+    @RequestMapping("/getTeacher")
+    @ResponseBody
+    public TeacherNameResult getTeacher(String deanId, HttpSession session)
+    {
+        System.out.println("获得班主任姓名");
+        String name = classService.getName(deanId,session);
+        TeacherNameResult teacherNameResult = new TeacherNameResult();
+        if(name == null)
+        {
+            teacherNameResult.setCode(-1);
+        }else {
+            teacherNameResult.setCode(0);
+            teacherNameResult.setTeacherName(name);
+        }
+        return teacherNameResult;
     }
 
     @RequestMapping("/file")

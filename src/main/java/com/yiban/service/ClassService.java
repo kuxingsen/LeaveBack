@@ -1,6 +1,7 @@
 package com.yiban.service;
 
 import com.yiban.dto.ClassResult;
+import com.yiban.dto.nameResult.DeanNameResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.mapper.ClassMapper;
 import com.yiban.utils.yibanApi.User;
@@ -50,21 +51,16 @@ public class ClassService {
         return classMapper.searchClassById(classId);
     }
 
-    public ClassResult getDean(String deanId, HttpSession session) {
-        /*String access_token = (String) session.getAttribute("accessToken");
+    public String getName(String deanId, HttpSession session) {
+        String access_token = (String) session.getAttribute("accessToken");
         System.out.println(access_token);
-        JSONObject object = JSONObject.fromObject(User.other("10967192",access_token));
+        JSONObject object = JSONObject.fromObject(User.other(deanId,access_token));
         System.out.println(object);
-        ClassResult classResult = new ClassResult();
         if(object.get("status").equals("success")){
-            classResult.setTotal(1);
-            String yb_username = (String) (JSONObject.fromObject(object.get("info"))).get("yb_username");
-            classResult.setMonitorName(yb_username);
+            return (String) (JSONObject.fromObject(object.get("info"))).get("yb_username");
         }else {
-            classResult.setTotal(0);
+            return null;
         }
-        return classResult;*/
-        return null;
     }
 
     public boolean addClassList(List<ClassTable> classTableList) {

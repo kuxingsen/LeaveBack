@@ -12,7 +12,7 @@
         <result column="teacher_yiban_id" property="teacherYibanId"/>
         <result column="teacher_name" property="teacherName"/>
         <result column="Dean_yiban_id" property="deanYiban_id"/>
-        <result column="dean_name" property="monitorName"/>
+        <result column="dean_name" property="deanName"/>
         <result column="monitor" property="monitorId"/>
         <result column="monitor_name" property="monitorName"/>
     </resultMap>
