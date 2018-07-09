@@ -19,10 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.security.x509.IssuerAlternativeNameExtension;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
@@ -138,15 +140,31 @@ public class ClassController {
     @ResponseBody
     public IsSuccessResult modifyClass(ClassTable classTable,HttpSession session)
     {
-        System.out.println("添加班级");
+        System.out.println("修改班级");
         System.out.println(classTable);
         IsSuccessResult msg = null;
-        String access_token = (String) session.getAttribute("accessToken");
-        int r = classService.addClass(classTable,access_token);
+        //前端未完善
+        int r = classService.modifyClass(classTable);
         if(r > 0){
-            msg = new IsSuccessResult(0,"添加成功");
+            msg = new IsSuccessResult(0,"修改成功");
         }else {
-            msg = new IsSuccessResult(-1,"添加失败");
+            msg = new IsSuccessResult(-1,"修改失败");
+        }
+        return msg;
+    }
+
+    @RequestMapping("/delete/{id}")
+    @ResponseBody
+    public IsSuccessResult deleteClass(@PathVariable("id") String classId)
+    {
+        System.out.println("删除班级"+classId);
+        IsSuccessResult msg = null;
+        //前端未完善
+        int r = classService.deleteClass(classId);
+        if(r > 0){
+            msg = new IsSuccessResult(0,"修改成功");
+        }else {
+            msg = new IsSuccessResult(-1,"修改失败");
         }
         return msg;
     }

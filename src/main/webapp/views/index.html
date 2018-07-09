@@ -37,15 +37,14 @@
                     window.location.href='/modify?q='+ $(this).parent().prevAll().last().text(); 
                 },
                 "click #deleteButton":function(e,value,row,index) {
-                    var classname = $(this).parent().prevAll().eq(4).text();    //获取班级名称
-                    var classid = $(this).parent().prevAll().eq(5).text();  //获取班级id  
+                    var classname = $(this).parent().prevAll().eq(6).text();    //获取班级名称
+                    var classid = $(this).parent().prevAll().eq(7).text();  //获取班级id
                     layer.confirm('您确定要删除'+classname+'('+classid+')'+'吗?', {
                         btn: ['确定','取消'] //按钮
                         }, function(){
                             $.ajax({
                                 method:'delete',
-                                url: '/class/delete',
-                                data: {id: classid},
+                                url: '/class/delete/'+classid,
                                 success: function(){
                                     layer.msg('删除成功');
                                     // layer.closeAll('dialog');  //关闭弹窗

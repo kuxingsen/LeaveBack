@@ -26,4 +26,8 @@ public interface ClassMapper {
 
 
     int addClass(ClassTable c);
+
+    int modifyClass(ClassTable classTable);
+
+    int deleteClass(@Param("classId") String classId);
 }

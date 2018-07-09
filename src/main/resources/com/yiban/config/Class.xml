@@ -36,4 +36,13 @@
     <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
         INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{monitorName},#{monitorId},#{monitorName})
     </insert>
+
+    <update id="modifyClass" parameterType="com.yiban.entity.ClassTable">
+        UPDATE class SET class_name=#{className},teacher_yiban_id=#{teacherYibanId},teacher_name=#{teacherName},
+            Dean_yiban_id=#{deanYiban_id},monitor_name=#{monitorName},monitor=#{monitorId},monitor_name=#{monitorName} WHERE class_id=#{classId}
+    </update>
+
+    <delete id="deleteClass" >
+        DELETE FROM class WHERE class_id=#{classId}
+    </delete>
 </mapper>

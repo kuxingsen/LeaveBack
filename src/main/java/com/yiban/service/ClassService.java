@@ -144,4 +144,12 @@ public class ClassService {
 
         return classMapper.addClass(classTable);
     }
+
+    public int modifyClass(ClassTable classTable) {
+        return classMapper.modifyClass(classTable);
+    }
+
+    public int deleteClass(String classId) {
+        return classMapper.deleteClass(classId);
+    }
 }
