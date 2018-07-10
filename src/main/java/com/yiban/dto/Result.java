@@ -9,21 +9,21 @@ import java.util.List;
  *
  * Created by Kuexun on 2018/7/8.
  */
-public class AllClassResult {
+public class Result<T> {
     private int total; //1 --- 成功， 其他---失败
-    private List<ClassTable> rows = new ArrayList<>();
+    private List<T> rows = new ArrayList<>();
 
-    public AllClassResult() {
+    public Result() {
     }
 
-    public AllClassResult(int total, List<ClassTable> rows) {
+    public Result(int total, List<T> rows) {
         this.total = total;
         this.rows = rows;
     }
 
     @Override
     public String toString() {
-        return "AllClassResult{" +
+        return "Result{" +
                 "total=" + total +
                 ", rows=" + rows +
                 '}';
@@ -38,11 +38,11 @@ public class AllClassResult {
     }
 
 
-    public List<ClassTable> getRows() {
+    public List<T> getRows() {
         return rows;
     }
 
-    public void setRows(List<ClassTable> rows) {
+    public void setRows(List<T> rows) {
         this.rows = rows;
     }
 }

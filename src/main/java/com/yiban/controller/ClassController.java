@@ -1,7 +1,7 @@
 package com.yiban.controller;
 
 import com.yiban.dto.AClassResult;
-import com.yiban.dto.AllClassResult;
+import com.yiban.dto.Result;
 import com.yiban.dto.IsSuccessResult;
 import com.yiban.dto.nameResult.DeanNameResult;
 import com.yiban.dto.nameResult.MonitorNameResult;
@@ -34,7 +34,7 @@ public class ClassController {
 
     @RequestMapping("/gettable")
     @ResponseBody
-    public AllClassResult getTable(){
+    public Result<ClassTable> getTable(){
         System.out.println("获取表格");
         return classService.searchAllClass();
     }

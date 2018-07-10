@@ -1,7 +1,7 @@
 package com.yiban.service;
 
 import com.yiban.dto.AClassResult;
-import com.yiban.dto.AllClassResult;
+import com.yiban.dto.Result;
 import com.yiban.entity.ClassTable;
 import com.yiban.mapper.ClassMapper;
 import com.yiban.utils.yibanApi.User;
@@ -37,13 +37,13 @@ public class ClassService {
     private ClassMapper classMapper;
     private Logger logger = LoggerFactory.getLogger(ClassService.class);
 
-    public AllClassResult searchAllClass()
+    public Result<ClassTable> searchAllClass()
     {
         List<ClassTable> classTableList = classMapper.searchAllClass();
-        AllClassResult allClassResult = new AllClassResult();
-        allClassResult.setTotal(classTableList.size());
-        allClassResult.setRows(classTableList);
-        return allClassResult;
+        Result<ClassTable> result = new Result<>();
+        result.setTotal(classTableList.size());
+        result.setRows(classTableList);
+        return result;
     }
     public AClassResult searchClassById(String classId)
     {
