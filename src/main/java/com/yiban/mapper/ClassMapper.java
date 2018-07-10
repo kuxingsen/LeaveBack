@@ -1,6 +1,7 @@
 package com.yiban.mapper;
 
 import com.yiban.dto.AClassResult;
+import com.yiban.dto.Result;
 import com.yiban.entity.ClassTable;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,8 +15,10 @@ import java.util.List;
 public interface ClassMapper {
     List<ClassTable> searchAllClass();
 
+    //用于修改页面时的回显
     AClassResult searchClassById(@Param("classId") String classId);
-
+    //用于查找班级时的回显
+    ClassTable searchClassByClassId(String classId);
 
 
     //查找学生对应的辅导员的易班ID
@@ -31,4 +34,5 @@ public interface ClassMapper {
     int modifyClass(ClassTable classTable);
 
     int deleteClass(@Param("classId") String classId);
+
 }

@@ -168,4 +168,13 @@ public class ClassService {
     public int deleteClass(String classId) {
         return classMapper.deleteClass(classId);
     }
+
+    public Result<ClassTable> searchClassByClassId(String classId) {
+        ClassTable classTable = classMapper.searchClassByClassId(classId);
+        List<ClassTable> classTableList = new ArrayList<>();
+        classTableList.add(classTable);
+        Result<ClassTable> classTableResult = new Result<>();
+        classTableResult.setRows(classTableList);
+        return classTableResult;
+    }
 }

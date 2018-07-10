@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface LeaveMapper {
     List<Info> getAllInfo();
+
+    List<Info> searchInfoByStudentId(String studentId);
 }

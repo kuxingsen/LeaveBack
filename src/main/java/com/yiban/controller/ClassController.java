@@ -157,4 +157,11 @@ public class ClassController {
         }
         return msg;
     }
+
+    @RequestMapping("/search/{classId}")
+    @ResponseBody
+    public Result<ClassTable> searchClassByClassId(@PathVariable("classId") String classId)
+    {
+        return classService.searchClassByClassId(classId);
+    }
 }

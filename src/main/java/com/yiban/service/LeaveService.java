@@ -1,6 +1,7 @@
 package com.yiban.service;
 
 import com.yiban.dto.Result;
+import com.yiban.entity.ClassTable;
 import com.yiban.entity.Info;
 import com.yiban.mapper.LeaveMapper;
 import org.apache.poi.hssf.usermodel.*;
@@ -200,5 +201,12 @@ public class LeaveService {
         }
         return true;
 
+    }
+
+    public Result<Info> searchInfoByStudentId(String studentId) {
+        List<Info> infoList = leaveMapper.searchInfoByStudentId(studentId);
+        Result<Info> infoResult = new Result<>();
+        infoResult.setRows(infoList);
+        return infoResult;
     }
 }

@@ -27,15 +27,6 @@
         <result column="monitor" property="monitorId"/>
         <result column="monitor_name" property="monitorName"/>
     </resultMap>
-    <!--<select id="searchTeacherByStudentId" resultType="java.lang.String">
-        SELECT teacher_yiban_id FROM class WHERE class_id = #{id}
-    </select>
-    <select id="searchDeanByStudentId" resultType="java.lang.String">
-        SELECT Dean_yiban_id FROM class WHERE class_id = #{id}
-    </select>
-    <select id="searchTeacher" resultType="java.lang.String">
-        SELECT class_id FROM class WHERE teacher_yiban_id =#{id} OR Dean_yiban_id= #{id}
-    </select>-->
 
     <select id="searchAllClass" resultMap="classTable">
         select * from class
@@ -43,6 +34,11 @@
     <select id="searchClassById" resultMap="aClassResult">
         select * from class WHERE class_id=#{classId}
     </select>
+
+    <select id="searchClassByClassId" resultMap="classTable">
+        select * from class WHERE class_id=#{classId}
+    </select>
+
 
     <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
         INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitorId},#{monitorName})

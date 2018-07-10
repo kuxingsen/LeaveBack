@@ -19,4 +19,9 @@
 	<select id="getAllInfo" resultMap="info">
 		SELECT * FROM information i,student s WHERE i.student_id=s.student_id
 	</select>
+
+	<!--List<Info> searchInfoByStudentId(String studentId);-->
+	<select id="searchInfoByStudentId" resultMap="info">
+		SELECT * FROM information i,student s WHERE i.student_id=s.student_id AND i.student_id=#{studentId}
+	</select>
 </mapper>
