@@ -31,7 +31,7 @@ public class Info implements Serializable {
     //请假状态
     private String status;
     //请假节数
-    private int num;
+    private int number;
     //请假原因
     private String reason;
 
@@ -50,17 +50,17 @@ public class Info implements Serializable {
                 ", endTime='" + endTime + '\'' +
                 ", phone='" + phone + '\'' +
                 ", status='" + status + '\'' +
-                ", num=" + num +
+                ", number=" + number +
                 ", reason='" + reason + '\'' +
                 '}';
     }
 
-    public int getNum() {
-        return num;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getReason() {
