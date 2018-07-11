@@ -205,6 +205,11 @@ public class LeaveService {
 
     public Result<Info> searchInfoByStudentId(String studentId) {
         List<Info> infoList = leaveMapper.searchInfoByStudentId(studentId);
+        for(Info i:infoList)
+        {
+            String status = i.getStatus();
+            i.setStatus(statusChange(status));//将状态码转成中文
+        }
         Result<Info> infoResult = new Result<>();
         infoResult.setRows(infoList);
         return infoResult;

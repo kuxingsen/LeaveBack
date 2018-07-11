@@ -34,9 +34,14 @@ public class ClassController {
 
     @RequestMapping("/gettable")
     @ResponseBody
-    public Result<ClassTable> getTable(){
+    public Result<ClassTable> getTable(int pageIndex,String search){
         System.out.println("获取表格");
-        return classService.searchAllClass();
+        int count = 10;//每页显示的条数
+        if(search == null || search.equals("")){
+            return classService.searchAllClassInPage(count,pageIndex);
+        }else {
+            return classService.searchClassByClassId(search);
+        }
     }
     @RequestMapping("/getClass")
     @ResponseBody

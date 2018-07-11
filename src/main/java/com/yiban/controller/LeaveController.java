@@ -1,9 +1,7 @@
 package com.yiban.controller;
 
 import com.yiban.dto.Result;
-import com.yiban.entity.ClassTable;
 import com.yiban.entity.Info;
-import com.yiban.service.ClassService;
 import com.yiban.service.LeaveService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletException;
@@ -37,10 +34,14 @@ public class LeaveController {
 
     @RequestMapping("/getAllInfo")
     @ResponseBody
-    public Result<Info> getAllInfo()
+    public Result<Info> getAllInfo(String search)
     {
         System.out.println("获取请假记录");
-        return leaveService.getAllInfo();
+        if(search == null || search.equals("")){
+            return leaveService.getAllInfo();
+        }else {
+            return leaveService.searchInfoByStudentId(search);
+        }
     }
 
     @RequestMapping("/downloadExcel")

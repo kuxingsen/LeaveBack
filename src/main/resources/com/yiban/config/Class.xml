@@ -31,6 +31,16 @@
     <select id="searchAllClass" resultMap="classTable">
         select * from class
     </select>
+
+    <!--List<ClassTable> searchAllClassInPage(int begin, int count);-->
+    <select id="searchAllClassInPage" resultMap="classTable">
+        select * from class LIMIT #{begin},#{count}
+    </select>
+
+    <!--int getAllLeaveTotal();-->
+    <select id="getAllLeaveTotal" resultType="Integer">
+        select count(*) from class
+    </select>
     <select id="searchClassById" resultMap="aClassResult">
         select * from class WHERE class_id=#{classId}
     </select>

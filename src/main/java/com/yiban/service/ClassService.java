@@ -177,4 +177,14 @@ public class ClassService {
         classTableResult.setRows(classTableList);
         return classTableResult;
     }
+
+    public Result<ClassTable> searchAllClassInPage(int count,int pageIndex) {
+        int begin = count * (pageIndex-1);
+        List<ClassTable> classTableList = classMapper.searchAllClassInPage(begin,count);
+        int total = classMapper.getAllLeaveTotal();
+        Result<ClassTable> result = new Result<>();
+        result.setTotal(total);
+        result.setRows(classTableList);
+        return result;
+    }
 }

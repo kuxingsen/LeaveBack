@@ -82,11 +82,17 @@
                     data: myform,
                     contentType: false,
                     processData: false,
-                    success: function (data) {
-                        console.log(data);
+                    success: function (res) {
+                        if(res.code == 0) {
+                            layer.msg('添加班级成功',{icon:1});
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2500);
+                        } else {
+                            layer.msg(res.msg,{icon:2});
+                        }
                     },
-                    error:function(data){
-                        console.log(data)
+                    error:function(res){
                     }
                 });
             }
@@ -112,7 +118,7 @@
                         monitorId : monitorId
                     },
                     success: function(res){
-                        if(res.total == 0) {  //提交成功，添加班级成功
+                        if(res.code == 0) {  //提交成功，添加班级成功
                             layer.msg('添加班级成功',{icon:1});
                             setTimeout(function() {
                                 location.reload();
