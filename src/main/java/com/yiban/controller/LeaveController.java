@@ -34,11 +34,12 @@ public class LeaveController {
 
     @RequestMapping("/getAllInfo")
     @ResponseBody
-    public Result<Info> getAllInfo(String search)
+    public Result<Info> getAllInfo(int pageIndex,String search)
     {
+        int count = 10;//每页显示的条数
         System.out.println("获取请假记录");
         if(search == null || search.equals("")){
-            return leaveService.getAllInfo();
+            return leaveService.getAllInfoInPage(count,pageIndex);
         }else {
             return leaveService.searchInfoByStudentId(search);
         }

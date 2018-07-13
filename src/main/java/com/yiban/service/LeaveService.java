@@ -214,4 +214,19 @@ public class LeaveService {
         infoResult.setRows(infoList);
         return infoResult;
     }
+
+    public Result<Info> getAllInfoInPage(int count, int pageIndex) {
+        int begin = count * (pageIndex-1);
+
+        List<Info> infoList = leaveMapper.getAllInfoInPage(begin,count);
+        for(Info i:infoList)
+        {
+            String status = i.getStatus();
+            i.setStatus(statusChange(status));//将状态码转成中文
+        }
+        Result<Info> result = new Result<>();
+        result.setTotal(infoList.size());
+        result.setRows(infoList);
+        return result;
+    }
 }

@@ -20,6 +20,10 @@
 		SELECT * FROM information i,student s WHERE i.student_id=s.student_id
 	</select>
 
+	<!--List<Info> getAllInfoInPage(int begin, int pageIndex);-->
+	<select id="getAllInfoInPage" resultMap="info">
+		SELECT * FROM information i,student s WHERE i.student_id=s.student_id LIMIT #{begin},#{count}
+	</select>
 	<!--List<Info> searchInfoByStudentId(String studentId);-->
 	<select id="searchInfoByStudentId" resultMap="info">
 		SELECT * FROM information i,student s WHERE i.student_id=s.student_id AND i.student_id=#{studentId}
