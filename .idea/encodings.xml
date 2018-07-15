@@ -4,10 +4,10 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/AllInterceptor.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/ClassController.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/StudentController.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/controller/ViewsController.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/AppContent.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/ClassTable.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Information.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Student.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/LeaveService.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/HTTPSimple.java" charset="GBK" />

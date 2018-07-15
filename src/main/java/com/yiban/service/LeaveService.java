@@ -8,6 +8,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -55,7 +56,8 @@ public class LeaveService {
         return tmp;
     }
 
-    public Boolean exportInformation (String path) {
+    public Boolean exportInformation (String path){
+
         List<Info> infoList = leaveMapper.getAllInfo();
     	/*
 		 * 设置表头：对Excel每列取名(必须根据你取的数据编写)
@@ -163,7 +165,7 @@ public class LeaveService {
                     if((tmp = information.getReason())!=null)
                     {
                         cell =row.createCell(9);
-                        cell.setCellValue(information.getReason());
+                        cell.setCellValue(tmp);
                         cell.setCellStyle(style);// 设置风格
                     }
                     if((tmp = information.getStatus()) !=null)
@@ -188,7 +190,7 @@ public class LeaveService {
             workbook.write(out);
             out.flush();
             workbook.write(out);
-        } catch (IOException e) {
+        }catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -224,8 +226,10 @@ public class LeaveService {
             String status = i.getStatus();
             i.setStatus(statusChange(status));//将状态码转成中文
         }
+
+        int total = leaveMapper.getAllLeaveTotal();
         Result<Info> result = new Result<>();
-        result.setTotal(infoList.size());
+        result.setTotal(total);
         result.setRows(infoList);
         return result;
     }

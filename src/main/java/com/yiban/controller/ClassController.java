@@ -1,11 +1,9 @@
 package com.yiban.controller;
 
 import com.yiban.dto.AClassResult;
+import com.yiban.dto.NameResult;
 import com.yiban.dto.Result;
 import com.yiban.dto.IsSuccessResult;
-import com.yiban.dto.nameResult.DeanNameResult;
-import com.yiban.dto.nameResult.MonitorNameResult;
-import com.yiban.dto.nameResult.TeacherNameResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.service.ClassService;
 
@@ -49,6 +47,21 @@ public class ClassController {
         System.out.println("获取班级"+classId);
         return classService.searchClassById(classId);
     }
+    @RequestMapping("/getClassName")
+    @ResponseBody
+    public NameResult getClassName(String uId){
+        System.out.println("获取班级"+uId);
+        String name = classService.getClassName(uId);
+        NameResult nameResult = new NameResult();
+        if(name == null)
+        {
+            nameResult.setCode(-1);
+        }else {
+            nameResult.setCode(0);
+            nameResult.setUName(name);
+        }
+        return nameResult;
+    }
     @RequestMapping("/addClass")
     @ResponseBody
     public IsSuccessResult addClass(ClassTable classTable,HttpSession session)
@@ -77,56 +90,22 @@ public class ClassController {
         return new IsSuccessResult(-1,"文件不存在或文件为空");
     }
 
-    @RequestMapping("/getDean")
+    @RequestMapping("/getName")
     @ResponseBody
-    public DeanNameResult getDean(String deanId, HttpSession session)
+    public NameResult getName(String uId, HttpSession session)
     {
-        System.out.println("获得班主任姓名");
+        System.out.println("获得姓名");
         String access_token = (String) session.getAttribute("accessToken");
-        String name = classService.getName(deanId,access_token);
-        DeanNameResult deanNameResult = new DeanNameResult();
+        String name = classService.getName(uId,access_token);
+        NameResult nameResult = new NameResult();
         if(name == null)
         {
-            deanNameResult.setCode(-1);
+            nameResult.setCode(-1);
         }else {
-            deanNameResult.setCode(0);
-            deanNameResult.setDeanName(name);
+            nameResult.setCode(0);
+            nameResult.setUName(name);
         }
-        return deanNameResult;
-    }
-    @RequestMapping("/getMonitor")
-    @ResponseBody
-    public MonitorNameResult getMonitor(String deanId, HttpSession session)
-    {
-        System.out.println("获得班长姓名");
-        String access_token = (String) session.getAttribute("accessToken");
-        String name = classService.getName(deanId,access_token);
-        MonitorNameResult monitorNameResult = new MonitorNameResult();
-        if(name == null)
-        {
-            monitorNameResult.setCode(-1);
-        }else {
-            monitorNameResult.setCode(0);
-            monitorNameResult.setMonitorName(name);
-        }
-        return monitorNameResult;
-    }
-    @RequestMapping("/getTeacher")
-    @ResponseBody
-    public TeacherNameResult getTeacher(String deanId, HttpSession session)
-    {
-        System.out.println("获得班主任姓名");
-        String access_token = (String) session.getAttribute("accessToken");
-        String name = classService.getName(deanId,access_token);
-        TeacherNameResult teacherNameResult = new TeacherNameResult();
-        if(name == null)
-        {
-            teacherNameResult.setCode(-1);
-        }else {
-            teacherNameResult.setCode(0);
-            teacherNameResult.setTeacherName(name);
-        }
-        return teacherNameResult;
+        return nameResult;
     }
     @RequestMapping("/modifyClass")
     @ResponseBody

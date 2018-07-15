@@ -28,4 +28,9 @@
 	<select id="searchInfoByStudentId" resultMap="info">
 		SELECT * FROM information i,student s WHERE i.student_id=s.student_id AND i.student_id=#{studentId}
 	</select>
+
+	<!--int getAllLeaveTotal();-->
+	<select id="getAllLeaveTotal" resultType="Integer">
+		SELECT count(*) FROM information
+	</select>
 </mapper>

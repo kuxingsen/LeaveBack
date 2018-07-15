@@ -1,0 +1,163 @@
+<!Doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>后台管理</title>
+        <link rel="stylesheet" href="/public/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/public/css/main.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/views/index">后台管理</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/views/index">主页</a></li>
+                        <li><a href="/views/add">添加班级</a></li>
+                        <li><a href="/views/show">请假记录</a></li>
+                        <li class="active"><a href="/views/changecls">转专业处理</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="content">
+            <div class="page-header">
+                <h1> 转专业处理 <button type="button" class="btn btn-info" id="upload">批量添加</button></h1>
+            </div>
+            <div class="col-md-8 form-group">
+                <label for="userId" class="control-label">用户ID</label>
+                <div>
+                    <input type="text" class="form-control" id="userId" placeholder="用户ID">
+                    <div class="alert alert-danger hint" role="alert">未找到该用户</div>
+                    <div class="alert alert-info hint" role="alert"></div>
+                </div>
+            </div>
+            <div class="col-md-8 form-group">
+                <label for="classId" class="control-label">目标班级ID</label>
+                <div>
+                    <input type="text" class="form-control" id="classId" placeholder="目标班级ID">
+                    <div class="alert alert-danger hint" role="alert">未找到该班级</div>
+                    <div class="alert alert-info hint" role="alert"></div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button type="button" class="btn btn-info" id="toChange">点击提交</button>
+            </div>  
+        </div>
+        
+        <script src="/public/jquery-3.3.1.min.js"></script>
+        <script src="/public/layer/layer.js"></script>
+        <script src="/public/search.js"></script>
+        <script type="text/javascript">
+            $('#upload').after('<input type="file" id="load_xls" name="file" style="display:none" onchange ="uploadFile()">');
+            $('#upload').click(function(){
+                document.getElementById("load_xls").click();
+            });
+            function uploadFile() {
+                var myform = new FormData();
+                myform.append('file',$('#load_xls')[0].files[0]);
+                $.ajax({
+                    url: "/student/file",
+                    type: "POST",
+                    data: myform,
+                    contentType: false,
+                    processData: false,
+                    success: function (res) {
+                        if(res.code == 0) {
+                            layer.msg('更改用户班级信息成功！',{icon:1});
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2500);
+                        } else {
+                            layer.msg(res.msg,{icon:2});
+                        }
+                    },
+                    error:function(res){
+                    }
+                });
+            }
+            $("#userId").on('input',function() {
+                //判断长度， 长度小于6不发请求
+                // console.log($(this).val());
+                var length = $(this).val().length;  //计算出输入长度
+                var brother = $(this).nextAll();  //找到所有兄弟节点
+                if(length<6) {
+                    brother.eq(0).show();
+                    brother.eq(1).hide();
+                } else {
+                    $.ajax({
+                        method: 'get',
+                        url: '/student/getName',
+                        data: { uId: $(this).val()},
+                        success: function(res) {
+                            console.log(res);
+                            if(res.code == 0) {   //正常返回，查找成功
+                                brother.eq(0).hide();
+                                brother.eq(1).text(res.uName).show();
+                            } else {     //错误返回， 没找到该人员
+                                brother.eq(0).show();
+                                brother.eq(1).hide();
+                            }
+                        }
+                    }); 
+                }
+            });
+            $("#classId").on('input',function() {
+                //判断长度， 长度小于6不发请求
+                // console.log($(this).val());
+                var length = $(this).val().length;  //计算出输入长度
+                var brother = $(this).nextAll();  //找到所有兄弟节点
+                if(length<6) {
+                    brother.eq(0).show();
+                    brother.eq(1).hide();
+                } else {
+                    $.ajax({
+                        method: 'get',
+                        url: '/class/getClassName',
+                        data: { uId: $(this).val()},
+                        success: function(res) {
+                            console.log(res);
+                            if(res.code == 0) {   //正常返回，查找成功
+                                brother.eq(0).hide();
+                                brother.eq(1).text(res.uName).show();
+                            } else {     //错误返回， 没找到该人员
+                                brother.eq(0).show();
+                                brother.eq(1).hide();
+                            }
+                        }
+                    }); 
+                }
+            });
+
+            //表单提交事件
+            $("#toChange").click(function() {
+                var uId = $('#userId').val();
+                var toClassId = $('#classId').val();
+                if(!uId || !toClassId) {
+                    layer.msg("表单内容不能有空！", {icon:2});
+                    return;
+                } 
+                $.ajax({
+                    url:'/student/changecls',
+                    method: 'post', 
+                    data: {
+                        studentId: uId,
+                        judgeIsNewClassId: toClassId
+                    },
+                    success: function(res){
+                        if(res.code == 0) {
+                            layer.msg('更改用户班级信息成功！', {icon:1});
+                            setTimeout(function() {
+                                location.reload();
+                            },2500);
+                        } else {
+                            layer.msg(res.msg, {icon:2});
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

@@ -36,5 +36,8 @@ public interface ClassMapper {
     int deleteClass(@Param("classId") String classId);
 
     List<ClassTable> searchAllClassInPage(@Param("begin") int begin, @Param("count") int count);
-    int getAllLeaveTotal();
+
+    int getAllClassTotal();
+
+    String getClassName(@Param("classId") String classId);
 }

@@ -37,4 +37,10 @@ public class ViewsController {
         System.out.println("请假记录");
         return "show";
     }
+    @RequestMapping("/changecls")
+    public String changecls()
+    {
+        System.out.println("转专业");
+        return "changecls";
+    }
 }

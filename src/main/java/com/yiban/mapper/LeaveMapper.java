@@ -17,4 +17,6 @@ public interface LeaveMapper {
     List<Info> searchInfoByStudentId(String studentId);
 
     List<Info> getAllInfoInPage(@Param("begin") int begin, @Param("count") int count);
+
+    int getAllLeaveTotal();
 }

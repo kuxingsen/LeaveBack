@@ -57,18 +57,19 @@ public class ClassService {
         return aClassResult;
     }
 
-    public String getName(String deanId, String access_token) {
+    public String getName(String id, String access_token) {
         System.out.println(access_token);
-        JSONObject object = JSONObject.fromObject(User.other(deanId,access_token));
+        JSONObject object = JSONObject.fromObject(User.other(id,access_token));
         System.out.println(object);
         if(object.get("status").equals("success")){
+//            System.out.println((String) (JSONObject.fromObject(object.get("info"))).get("yb_username"));
             return (String) (JSONObject.fromObject(object.get("info"))).get("yb_username");
         }else {
             return null;
         }
     }
 
-    public boolean addClassList(List<ClassTable> classTableList) {
+    private boolean addClassList(List<ClassTable> classTableList) {
         for (ClassTable c:classTableList)
         {
             classMapper.addClass(c);
@@ -181,10 +182,14 @@ public class ClassService {
     public Result<ClassTable> searchAllClassInPage(int count,int pageIndex) {
         int begin = count * (pageIndex-1);
         List<ClassTable> classTableList = classMapper.searchAllClassInPage(begin,count);
-        int total = classMapper.getAllLeaveTotal();
+        int total = classMapper.getAllClassTotal();
         Result<ClassTable> result = new Result<>();
         result.setTotal(total);
         result.setRows(classTableList);
         return result;
+    }
+
+    public String getClassName(String classId) {
+        return classMapper.getClassName(classId);
     }
 }

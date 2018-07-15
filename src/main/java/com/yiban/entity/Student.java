@@ -15,23 +15,24 @@ public class Student implements Serializable {
     private String department;
     //学生班级信息
     private String className;
-    
+    //判断新班级
+    private String judgeIsNewClassId;
+
     public Student()
     {
     	super();
     }
-   
-    public Student(String yibanId, String studentId, String name,
-			String department, String className) {
-		super();
-		this.yibanId = yibanId;
-		this.studentId = studentId;
-		this.name = name;
-		this.department = department;
-		this.className = className;
-	}
 
-	@Override
+    public Student(String yibanId, String studentId, String name, String department, String className, String judgeIsNewClassId) {
+        this.yibanId = yibanId;
+        this.studentId = studentId;
+        this.name = name;
+        this.department = department;
+        this.className = className;
+        this.judgeIsNewClassId = judgeIsNewClassId;
+    }
+
+    @Override
     public String toString() {
         return "Student{" +
                 "yibanId='" + yibanId + '\'' +
@@ -39,9 +40,17 @@ public class Student implements Serializable {
                 ", name='" + name + '\'' +
                 ", department='" + department + '\'' +
                 ", className='" + className + '\'' +
+                ", judgeIsNewClassId='" + judgeIsNewClassId + '\'' +
                 '}';
     }
 
+    public String getJudgeIsNewClassId() {
+        return judgeIsNewClassId;
+    }
+
+    public void setJudgeIsNewClassId(String judgeIsNewClassId) {
+        this.judgeIsNewClassId = judgeIsNewClassId;
+    }
     public String getYibanId() {
         return yibanId;
     }

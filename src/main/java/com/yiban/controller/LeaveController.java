@@ -2,6 +2,7 @@ package com.yiban.controller;
 
 import com.yiban.dto.Result;
 import com.yiban.entity.Info;
+import com.yiban.mapper.LeaveMapper;
 import com.yiban.service.LeaveService;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;

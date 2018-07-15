@@ -10,13 +10,13 @@ $("#deanId").on('input',function() {
     } else {
         $.ajax({
             method: 'get',
-            url: '/class/getDean',
-            data: { deanId: $(this).val()},
+            url: '/class/getName',
+            data: { uId: $(this).val()},
             success: function(res) {
                 console.log(res);
                 if(res.code === 0) {   //正常返回，查找成功
                     brother.eq(0).hide();
-                    brother.eq(1).text(res.deanName).show();
+                    brother.eq(1).text(res.uName).show();
                 } else {     //错误返回， 没找到该人员
                     brother.eq(0).show();
                     brother.eq(1).hide();
@@ -36,13 +36,13 @@ $("#teacherId").on('input',function() {
     } else {
         $.ajax({
             method: 'get',
-            url: '/class/getTeacher',
-            data: { deanId: $(this).val()},
+            url: '/class/getName',
+            data: { uId: $(this).val()},
             success: function(res) {
                 console.log(res);
                 if(res.code == '0') {   //正常返回，查找成功
                     brother.eq(0).hide();
-                    brother.eq(1).text(res.teacherName).show();
+                    brother.eq(1).text(res.uName).show();
                 } else {     //错误返回， 没找到该人员
                     brother.eq(0).show();
                     brother.eq(1).hide();
@@ -62,13 +62,13 @@ $("#monitorId").on('input',function() {
     } else {
         $.ajax({
             method: 'get',
-            url: '/class/getMonitor',
-            data: { deanId: $(this).val()},
+            url: '/class/getName',
+            data: { uId: $(this).val()},
             success: function(res) {
                 console.log(res);
                 if(res.code == 0) {   //正常返回，查找成功
                     brother.eq(0).hide();
-                    brother.eq(1).text(res.monitorName).show();
+                    brother.eq(1).text(res.uName).show();
                 } else {     //错误返回， 没找到该人员
                     brother.eq(0).show();
                     brother.eq(1).hide();

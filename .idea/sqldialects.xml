@@ -3,5 +3,6 @@
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/src/main/resources/com/yiban/config/Class.xml" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/main/resources/com/yiban/config/Leave.xml" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/com/yiban/config/Student.xml" dialect="MySQL" />
   </component>
 </project>

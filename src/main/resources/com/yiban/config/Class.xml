@@ -38,7 +38,7 @@
     </select>
 
     <!--int getAllLeaveTotal();-->
-    <select id="getAllLeaveTotal" resultType="Integer">
+    <select id="getAllClassTotal" resultType="Integer">
         select count(*) from class
     </select>
     <select id="searchClassById" resultMap="aClassResult">
@@ -49,6 +49,10 @@
         select * from class WHERE class_id=#{classId}
     </select>
 
+    <!--String getClassName(@Param("classId") String classId);-->
+    <select id="getClassName" resultType="String">
+        select class_name from class WHERE class_id=#{classId}
+    </select>
 
     <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
         INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitorId},#{monitorName})

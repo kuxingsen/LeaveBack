@@ -5,23 +5,37 @@
     <cache eviction="FIFO"
            flushInterval="60000"
            size="512"/>
-<!--
     <resultMap id="student" type="com.yiban.entity.Student">
-        <id column="yiban_id" property="yiban_id"/>
+        <id column="yiban_id" property="yibanId"/>
         <result column="student_id" property="studentId"/>
         <result column="name" property="name"/>
         <result column="department" property="department"/>
         <result column="class_name" property="className"/>
+        <result column="judgeClassId" property="judgeIsNewClassId"/>
     </resultMap>
     <select id="select" resultMap="student">
-        SELECT a.student_id,a.name,a.department,a.class_name FROM student a WHERE a.yiban_id = #{id}
+        SELECT a.student_id,a.name,a.department,a.class_name,a.judgeClassId FROM student a WHERE a.yiban_id = #{id}
     </select>
     <insert id="insert">
-        INSERT IGNORE INTO student VALUES (#{studentId},#{name},#{department},#{className},#{yibanId})
+        INSERT IGNORE INTO student VALUES (#{studentId},#{name},#{department},#{className},#{yibanId},#{judgeIsNewClassId})
     </insert>
-    &lt;!&ndash;查询学生姓名和班级&ndash;&gt;
+    <!--查询学生姓名和班级-->
     <select id="selectStudentNameAndClassName" resultMap="student">
         SELECT a.name,a.class_name FROM student a WHERE  a.student_id =#{StudentId}
     </select>
--->
+
+    <!--boolean hasStudent(Student student);-->
+    <select id="hasStudent" resultType="Integer">
+        SELECT COUNT(*) FROM student WHERE student_id = #{studentId}
+    </select>
+
+    <!--int modifyClass(Student student);-->
+    <update id="modifyClass" >
+        UPDATE student SET judgeClassId=#{judgeIsNewClassId} WHERE student_id=#{studentId}
+    </update>
+
+    <!--String getName(@Param("studentId") String studentId);-->
+    <select id="getName" resultType="String">
+        SELECT name FROM student WHERE student_id = #{studentId}
+    </select>
 </mapper>
