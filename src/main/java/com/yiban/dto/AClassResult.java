@@ -1,16 +1,14 @@
 package com.yiban.dto;
 
 /**
+ * 主要用于修改班级时的回显
+ * 跟com.yiban.entity.ClassTable基本一样，只是多了一个code，而其他数据只是变量不同（前端不肯改我也很绝望）
  * Created by Kuexun on 2018/7/9.
  */
 public class AClassResult {
-    //{code:0,
+    //0表示查找成功，-1表示失败
     private int code;
-    // classId: classId,className:"班级名称",
-    // deanId:'123456',deanName:'美少女',
-    // teacherId:'123321',teacherName:'最漂亮美少女',
-    // monitorId:'201624133135',monitorName:'Af'}
-
+    //班级编号
     private String classId;
     private String className;
     //班级对应辅导员的易班ID

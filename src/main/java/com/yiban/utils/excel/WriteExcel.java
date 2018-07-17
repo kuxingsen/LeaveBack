@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by Kuexun on 2018/7/8.
  */
 public class WriteExcel {
-    public static boolean write(MultipartFile file)
+    public static String write(MultipartFile file)
     {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -21,12 +21,12 @@ public class WriteExcel {
         String filePath = "D://TestLeave2//" + day + "//" + fileName;
         File excelFile = new File(filePath);
         try {
-            FileUtils.copyInputStreamToFile(file.getInputStream(),excelFile);
+            FileUtils.copyInputStreamToFile(file.getInputStream(),excelFile);//先把文件保存下来以免不时之需
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-        return true;
+        return filePath;
     }
 
 }

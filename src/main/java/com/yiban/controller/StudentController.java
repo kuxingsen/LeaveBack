@@ -21,18 +21,23 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    /**
+     * 修改单个学生的班级（/views/changecls.html）
+     * @param student 学生信息（只有学号和新班级）
+     * @return 成功或失败
+     */
     @RequestMapping("/changecls")
     @ResponseBody
     public IsSuccessResult modifyClass(Student student)
     {
-        int i = studentService.modifyClass(student);
+        int i = studentService.modifyClass(student);//修改班级
         IsSuccessResult isSuccessResult = new IsSuccessResult();
         if(i > 0){
             isSuccessResult.setCode(0);
             isSuccessResult.setMsg("学生修改班级成功");
         }else {
             isSuccessResult.setCode(-1);
-            isSuccessResult.setMsg("学生修改班级失败");
+            isSuccessResult.setMsg("学生修改班级失败，没有这个学生");
         }
         return isSuccessResult;
     }

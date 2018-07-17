@@ -1,9 +1,11 @@
 package com.yiban.service;
 
 import com.yiban.dto.AClassResult;
+import com.yiban.dto.IsSuccessResult;
 import com.yiban.dto.Result;
 import com.yiban.entity.ClassTable;
 import com.yiban.mapper.ClassMapper;
+import com.yiban.utils.excel.WriteExcel;
 import com.yiban.utils.yibanApi.User;
 import net.sf.json.JSONObject;
 import org.apache.commons.io.FileUtils;
@@ -37,121 +39,214 @@ public class ClassService {
     private ClassMapper classMapper;
     private Logger logger = LoggerFactory.getLogger(ClassService.class);
 
-    public Result<ClassTable> searchAllClass()
-    {
-        List<ClassTable> classTableList = classMapper.searchAllClass();
-        Result<ClassTable> result = new Result<>();
-        result.setTotal(classTableList.size());
-        result.setRows(classTableList);
-        return result;
-    }
+    /**
+     * ·µ»ØÖ¸¶¨°à¼¶±àºÅµÄµ¥Ìõ¼ÇÂ¼
+     * @param classId °à¼¶±àºÅ£¬Îªclass±íµÄÖ÷¼ü,Ò»°ã²»Îªnull
+     * @return µ¥Ìõ°à¼¶¼ÇÂ¼
+     */
     public AClassResult searchClassById(String classId)
     {
-        AClassResult aClassResult = classMapper.searchClassById(classId);
+        AClassResult aClassResult = classMapper.searchClassById(classId);//´Óclass±íÀï»ñµÃ°à¼¶±àºÅÎªclassIdµÄ¼ÇÂ¼
         if(aClassResult != null)
         {
             aClassResult.setCode(0);
         }else {
+            aClassResult = new AClassResult();//´ËÊ±aClassResultÎªnull£¬ËùÒÔ±ØĞënewÒ»¸ö
             aClassResult.setCode(-1);
         }
         return aClassResult;
     }
 
+    /**
+     * @param id Ò×°à±àºÅ£¬¿ÉÄÜÊÇ¸¨µ¼Ô±¡¢°àÖ÷ÈÎ¡¢°à³¤µÄ
+     * @param access_token ÓÃÓÚ»ñÈ¡Ò×°àidÏàÓ¦µÄêÇ³Æ(https://openapi.yiban.cn/user/other)
+     * @return ÏàÓ¦µÄÃû³Æ
+     */
     public String getName(String id, String access_token) {
-        System.out.println(access_token);
         JSONObject object = JSONObject.fromObject(User.other(id,access_token));
-        System.out.println(object);
+//        System.out.println(object);
         if(object.get("status").equals("success")){
-//            System.out.println((String) (JSONObject.fromObject(object.get("info"))).get("yb_username"));
             return (String) (JSONObject.fromObject(object.get("info"))).get("yb_username");
         }else {
             return null;
         }
     }
 
-    private boolean addClassList(List<ClassTable> classTableList) {
+    /**
+     * ÅúÁ¿Ìí¼Ó°à¼¶
+     * @param classTableList °à¼¶ÁĞ±í
+     * @return ³É¹¦Ìí¼ÓµÄÌõÊı
+     */
+    private int addClassList(List<ClassTable> classTableList) {
+        int count = 0;
         for (ClassTable c:classTableList)
         {
-            classMapper.addClass(c);
+            if(0 == classMapper.addClass(c))
+            {
+                System.out.println(c.getClassId()+"Ìí¼ÓÊ§°Ü");
+            }else {
+                count++;
+            }
         }
-        return true;
-    }
-
-    public void readExcel(MultipartFile file) {
-        List<ClassTable> classTableList = new ArrayList<>();
-        try {
-                logger.info("ä¸Šä¼ çš„æ–‡ä»¶åï¼š{}", file.getOriginalFilename());
-                Date date = new Date();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                String day = format.format(date);
-                String fileName = file.getOriginalFilename();
-                String filePath = "D://TestLeave2//" + day + "//" + fileName;
-                File excelFile = new File(filePath);
-                FileUtils.copyInputStreamToFile(file.getInputStream(),excelFile);
-
-                InputStream is = new FileInputStream(excelFile);
-                try {
-                    String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-                    //è·å–å·¥ä½œè–„
-                    Workbook wb = null;
-                    if (fileType.equals("xls")) {
-                        wb = new HSSFWorkbook(is);
-                    } else if (fileType.equals("xlsx")) {
-                        wb = new XSSFWorkbook(is);
-                    } else {
-                        return;
-                    }
-                    //è¯»å–ç¬¬ä¸€ä¸ªå·¥ä½œé¡µsheet
-                    Sheet sheet = wb.getSheetAt(0);
-                    //ç¬¬ä¸€è¡Œä¸ºæ ‡é¢˜
-                    for (Row row : sheet) {
-                        for (Cell cell : row) {
-                            //æ ¹æ®ä¸åŒç±»å‹è½¬åŒ–æˆå­—ç¬¦ä¸²
-                            cell.setCellType(Cell.CELL_TYPE_STRING);
-                        }
-                        ClassTable classTable = new ClassTable();
-                        //éå†æ¯è¡Œä¸­çš„æ¯åˆ—
-                        classTable.setClassId(row.getCell(0).getStringCellValue());
-                        classTable.setClassName(row.getCell(1).getStringCellValue());
-
-                        classTable.setDeanYiban_id(row.getCell(2).getStringCellValue());
-                        classTable.setDeanName(row.getCell(3).getStringCellValue());
-
-                        classTable.setTeacherYibanId(row.getCell(4).getStringCellValue());
-                        classTable.setTeacherName(row.getCell(5).getStringCellValue());
-
-                        classTable.setMonitorId(row.getCell(6).getStringCellValue());
-                        classTable.setMonitorName(row.getCell(7).getStringCellValue());
-                        System.out.println(classTable);
-                        classTableList.add(classTable);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        is.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                addClassList(classTableList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        return count;
     }
 
     /**
-     * è¡¥å…¨classTableçš„åå­—å±æ€§
-     * @param classTable
-     * @param access_token
-     * @return
+     * ¶ÁÈ¡excelÎÄ¼ş£¬ÅúÁ¿µ¼Èë°à¼¶
+     * @param file µ¼ÈëµÄÎÄ¼ş£¬¸ÃÎÄ¼şĞèÎªÖ¸¶¨¸ñÊ½£¨°à¼¶±àºÅ£¬°à¼¶Ãû³Æ£¬¸¨µ¼Ô±Ò×°à±àºÅ£¬¸¨µ¼Ô±ĞÕÃû£¨êÇ³Æ£¿£©£¬°àÖ÷ÈÎ±àºÅ£¬°àÖ÷ÈÎĞÕÃû£¬°à³¤±àºÅ£¬°à³¤ĞÕÃû£©
+     *             ÇÒÎÄ¼şµÄµ¥Ôª¸ñ²»ÄÜÎª¿Õ£¬¸¨µ¼Ô±¡¢°àÖ÷ÈÎ¡¢°à³¤µÄÒ×°àidĞèÎªÕæÊµid
+     * @param access_token ÓÃÓÚ»ñÈ¡Ò×°àidÏàÓ¦µÄêÇ³Æ(https://openapi.yiban.cn/user/other)
+     * @return ³É¹¦»òÊ§°Ü
+     */
+    public IsSuccessResult readExcel(MultipartFile file,String access_token) {
+        List<ClassTable> classTableList = new ArrayList<>();
+        String msg="";
+        try {
+            String fileName = file.getOriginalFilename();
+            logger.info("ÉÏ´«µÄÎÄ¼şÃû£º{}", fileName);
+            String filePath = WriteExcel.write(file);//´æ´¢Î»ÖÃÓĞ´ıÉÌÈ¶
+            File excelFile = null;
+            if (filePath != null) {
+                excelFile = new File(filePath);
+            }else {
+                msg = "ÎÄ¼ş±£´æ´íÎó";
+                return new IsSuccessResult(-1,msg);
+            }
+
+            InputStream is = new FileInputStream(excelFile);
+            try {
+                String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
+                //»ñÈ¡¹¤×÷±¡
+                Workbook wb = null;
+                if (fileType.equals("xls")) {
+                    wb = new HSSFWorkbook(is);
+                } else if (fileType.equals("xlsx")) {
+                    wb = new XSSFWorkbook(is);
+                } else {
+                    msg = "ÎÄ¼ş²»ÊÇxls»òxlsx¸ñÊ½";
+                    return new IsSuccessResult(-1,msg);
+                }
+                //¶ÁÈ¡µÚÒ»¸ö¹¤×÷Ò³sheet
+                Sheet sheet = wb.getSheetAt(0);
+                //µÚÒ»ĞĞÎª±êÌâ
+                for (Row row : sheet) {
+                    if (row.getRowNum() == 0) continue;//Ê×ĞĞ²»µ¼Èë
+                    for (int i = 0;i < 8;i ++) {
+                        Cell cell = row.getCell(i);
+                        if(cell != null) {
+                            //¸ù¾İ²»Í¬ÀàĞÍ×ª»¯³É×Ö·û´®
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            if(cell.getStringCellValue() == null || (cell.getStringCellValue()).equals("")){
+                                msg += (1+row.getRowNum())+"ĞĞ"+(cell.getColumnIndex()+1)+"ÁĞÎª¿Õ\t";//¿Õµ¥Ôª
+//                                System.out.println((1+row.getRowNum())+"ĞĞ"+(cell.getColumnIndex()+1)+"ÁĞ");
+                            }
+                        }else {
+                            msg += (1+row.getRowNum())+"ĞĞ"+(1+i)+"ÁĞÎª¿Õ\t";//¿Õµ¥Ôª
+//                            System.out.println((1+row.getRowNum())+"ĞĞ"+(1+i)+"ÁĞ");
+                        }
+                    }
+                    //±éÀúÃ¿ĞĞÖĞµÄÃ¿ÁĞ
+                    ClassTable classTable = setClassTable(row);
+
+                    if(getName(classTable.getTeacherYibanId(),access_token) == null)
+                    {
+                        msg += (row.getRowNum()+1)+"ĞĞ"+3+"ÁĞ²»ÊÇyiban_id\t";
+                    }
+                    if(getName(classTable.getDeanYiban_id(),access_token) == null)
+                    {
+                        msg += (row.getRowNum()+1)+"ĞĞ"+5+"ÁĞ²»ÊÇyiban_id\t";
+                    }
+                    if(getName(classTable.getMonitorId(),access_token) == null)
+                    {
+                        msg += (row.getRowNum()+1)+"ĞĞ"+7+"ÁĞ²»ÊÇyiban_id\t";
+                    }
+//                    System.out.println(classTable);
+                    classTableList.add(classTable);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(!msg.equals(""))
+            {
+                return new IsSuccessResult(-1,msg);
+            }
+            int count = addClassList(classTableList);//½«Êı¾İÖğÒ»Ìí¼Ó½øÊı¾İ¿â
+            msg = "ÎÄ¼ş¹²ÓĞ"+classTableList.size()+"Ìõ¼ÇÂ¼£¬³É¹¦µ¼Èë"+count+"Ìõ";
+            return new IsSuccessResult(0,msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        msg="ÎÄ¼şµ¼ÈëÊ§°Ü";
+        return new IsSuccessResult(-1,msg);
+    }
+
+    /**
+     * ½«excel±íÖĞÒ»ĞĞµÄÊı¾İÌî³ä½øĞÂclassÀà
+     * @param row excel±íµÄÒ»ĞĞ
+     * @return ÒÑÌî³äÍê³ÉµÄclass¶ÔÏó
+     */
+    private ClassTable setClassTable(Row row)
+    {
+        ClassTable classTable = new ClassTable();
+        Cell cell;
+
+        if((cell = row.getCell(0)) != null)
+        {
+            classTable.setClassId(cell.getStringCellValue());//°à¼¶±àºÅ
+        }
+        if((cell = row.getCell(1)) != null)
+        {
+            classTable.setClassName(cell.getStringCellValue());//°à¼¶Ãû³Æ
+        }
+
+        if((cell = row.getCell(2)) != null)
+        {
+            classTable.setTeacherYibanId(cell.getStringCellValue());//¸¨µ¼Ô±±àºÅ
+        }
+        if((cell = row.getCell(3)) != null)
+        {
+            classTable.setTeacherName(cell.getStringCellValue());//¸¨µ¼Ô±ĞÕÃû
+        }
+
+        if((cell = row.getCell(4)) != null)
+        {
+            classTable.setDeanYiban_id(cell.getStringCellValue());//°àÖ÷ÈÎ±àºÅ
+        }
+        if((cell = row.getCell(5)) != null)
+        {
+            classTable.setDeanName(cell.getStringCellValue());//°àÖ÷ÈÎÃû³Æ
+        }
+
+        if((cell = row.getCell(6)) != null)
+        {
+            classTable.setMonitorId(cell.getStringCellValue());//°à³¤±àºÅ
+        }
+        if((cell = row.getCell(7)) != null)
+        {
+            classTable.setMonitorName(cell.getStringCellValue());//°à³¤Ãû³Æ
+        }
+
+        return classTable;
+    }
+    /**
+     * ²¹È«classTableµÄÃû×ÖÊôĞÔ£¬Í¨¹ıÒ×°àid»ñÈ¡ÏàÓ¦µÄêÇ³Æ
+     * @param classTable ĞèÒª²¹È«µÄ°à¼¶¶ÔÏó
+     * @param access_token µ÷ÓÃ https://openapi.yiban.cn/user/other ĞèÒªµÇÂ¼ÕßµÄaccess_token
+     * @return ²¹È«ºÃµÄclassTable
      */
     public ClassTable setClassTableName(ClassTable classTable,String access_token)
     {
+        //»ñÈ¡Ç°¶Ë´«À´µÄÒ×°à±àºÅ
         String teacherId= classTable.getTeacherYibanId();
         String monitorId = classTable.getMonitorId();
         String deanId = classTable.getDeanYiban_id();
+        //ÉèÖÃ´ÓÒ×°àÍø»ñµÃµÄÒ×°àêÇ³Æ
         classTable.setTeacherName(getName(teacherId,access_token));
         classTable.setDeanName(getName(deanId,access_token));
         classTable.setMonitorName(getName(monitorId,access_token));
@@ -162,34 +257,69 @@ public class ClassService {
         return classMapper.addClass(classTable);
     }
 
+    /**
+     * ½«Êı¾İ¸üĞÂµ½Êı¾İ¿â
+     * @param classTable classÊµÌå
+     * @return ĞŞ¸ÄµÄÌõÊı£¨³É¹¦Îª1£¬Ê§°ÜÎª0£©
+     */
     public int modifyClass(ClassTable classTable) {
         return classMapper.modifyClass(classTable);
     }
 
+    /**
+     * É¾³ıÊı¾İ¿âµÄÖ¸¶¨°à¼¶£¨ÕâÀïÊÇÎïÀíÉ¾³ı£¬¿¼ÂÇÂß¼­É¾³ı£©
+     * @param classId ĞèÉ¾³ıµÄ°à¼¶µÄid
+     * @return É¾³ıµÄÌõÊı£¨Ò»°ãÎª1£©
+     */
     public int deleteClass(String classId) {
         return classMapper.deleteClass(classId);
     }
 
+    /**
+     * »ñÈ¡Ö¸¶¨classIdµÄ°à¼¶¼ÇÂ¼
+     * @param classId °à¼¶±àºÅ£¬Îªclass±íµÄÖ÷¼ü,Ò»°ã²»Îªnull
+     * @return °à¼¶±í½á¹û¼¯
+     */
     public Result<ClassTable> searchClassByClassId(String classId) {
-        ClassTable classTable = classMapper.searchClassByClassId(classId);
-        List<ClassTable> classTableList = new ArrayList<>();
-        classTableList.add(classTable);
+        ClassTable classTable = classMapper.searchClassByClassId(classId);//´Óclass±íÀï»ñµÃ°à¼¶±àºÅÎªclassIdµÄ¼ÇÂ¼
         Result<ClassTable> classTableResult = new Result<>();
-        classTableResult.setRows(classTableList);
+        if(classTable != null){
+            List<ClassTable> classTableList = new ArrayList<>();
+            classTableList.add(classTable);
+            classTableResult.setRows(classTableList);
+        }else {
+            classTableResult.setRows(null);
+        }
         return classTableResult;
     }
 
+    /**
+     * »ñÈ¡Ö¸¶¨Ò³ÊıÌõÊıµÄ°à¼¶¼ÇÂ¼
+     * @param count Ã¿Ò³ÏÔÊ¾µÄÌõÊı
+     * @param pageIndex Ò³ÃæÒ³Âë
+     * @return °à¼¶±í½á¹û¼¯
+     */
     public Result<ClassTable> searchAllClassInPage(int count,int pageIndex) {
-        int begin = count * (pageIndex-1);
-        List<ClassTable> classTableList = classMapper.searchAllClassInPage(begin,count);
-        int total = classMapper.getAllClassTotal();
+        int begin = count * (pageIndex-1);//´ÓÊı¾İ¿âµÄµÚbeginÌõ¿ªÊ¼²éÕÒ
+        List<ClassTable> classTableList = classMapper.searchAllClassInPage(begin,count);//´Óclass±íÀï»ñµÃÒÔbegin¿ªÊ¼µÄÇ°countÌõ¼ÇÂ¼
+        int total = classMapper.getAllClassTotal();//»ñÈ¡ËùÓĞ°à¼¶¼ÇÂ¼µÄÌõÊı£¨±ãÓÚÇ°¶Ë·ÖÒ³£©
         Result<ClassTable> result = new Result<>();
-        result.setTotal(total);
-        result.setRows(classTableList);
+        if(classTableList != null)//Ò»°ã²»Îª¿Õ
+        {
+            result.setTotal(total);
+            result.setRows(classTableList);
+        }else {
+            result.setTotal(-1);
+        }
         return result;
     }
 
+    /**
+     * »ñÈ¡ÏàÓ¦µÄ°à¼¶Ãû³Æ
+     * @param classId °à¼¶±àºÅ
+     * @return °à¼¶Ãû³Æ
+     */
     public String getClassName(String classId) {
-        return classMapper.getClassName(classId);
+        return classMapper.getClassName(classId);//´Óclass±íÖĞ»ñÈ¡Ö¸¶¨classIdµÄ°à¼¶Ãû³Æ
     }
 }

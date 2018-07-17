@@ -1,10 +1,13 @@
 package com.yiban.dto;
 
 /**
+ * 用于增加、修改、删除班级和导入或导出时的返回，表示成功或失败
  * Created by Kuexun on 2018/7/9.
  */
 public class IsSuccessResult {
+    //0表示查找成功，-1表示失败
     private int code;
+    //成功或失败返回的信息（前端基本不用它）
     private String msg;
 
     public IsSuccessResult() {

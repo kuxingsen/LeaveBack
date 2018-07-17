@@ -55,7 +55,7 @@
     </select>
 
     <insert id="addClass" parameterType="com.yiban.entity.ClassTable">
-        INSERT into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitorId},#{monitorName})
+        INSERT IGNORE into class values(#{classId},#{className},#{teacherYibanId},#{teacherName},#{deanYiban_id},#{deanName},#{monitorId},#{monitorName})
     </insert>
 
     <update id="modifyClass" parameterType="com.yiban.entity.ClassTable">

@@ -1,6 +1,5 @@
 package com.yiban.dto;
 
-import com.yiban.entity.ClassTable;
 
 import java.util.ArrayList;
 import java.util.List;

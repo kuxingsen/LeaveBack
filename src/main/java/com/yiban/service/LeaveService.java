@@ -5,6 +5,8 @@ import com.yiban.entity.ClassTable;
 import com.yiban.entity.Info;
 import com.yiban.mapper.LeaveMapper;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +23,11 @@ public class LeaveService {
     @Autowired
     private LeaveMapper leaveMapper;
 
-    public Result<Info> getAllInfo() {
-        List<Info> infoList = leaveMapper.getAllInfo();
-        for(Info i:infoList)
-        {
-            String status = i.getStatus();
-            i.setStatus(statusChange(status));//将状态码转成中文
-        }
-        Result<Info> result = new Result<>();
-        result.setTotal(infoList.size());
-        result.setRows(infoList);
-        return result;
-    }
-
-
-
+    /**
+     * 将请假状态码修改成相应的中文
+     * @param status 状态码（-1，0，1，2）
+     * @return 中文状态
+     */
     private String statusChange(String status){
         //（-1：拒绝，0：待审核，1：已同意未销假，2：已销假）
         String tmp = null;
@@ -56,6 +48,11 @@ public class LeaveService {
         return tmp;
     }
 
+    /**
+     * 将数据填充到指定路径
+     * @param path 指定文件路径
+     * @return 是否成功
+     */
     public Boolean exportInformation (String path){
 
         List<Info> infoList = leaveMapper.getAllInfo();
@@ -80,7 +77,6 @@ public class LeaveService {
         try {
             /**
              * 根据是否取出数据，设置header信息
-             *
              */
             if(infoList.size()<1)
             {
@@ -112,71 +108,8 @@ public class LeaveService {
                     cell.setCellValue(index++);
                     cell.setCellStyle(style);// 设置风格
 
-                    String tmp=null;
-                    int tmp2 = 0;
-                    if((tmp = information.getStudentId())!=null)
-                    {
-                        cell=row.createCell(1);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getStudentName())!=null)
-                    {
-                        cell=row.createCell(2);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getDepartment())!=null)
-                    {
-                        cell =row.createCell(3);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getClassName())!=null)
-                    {
-                        cell =row.createCell(4);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getPhone()) != null)
-                    {
-                        cell =row.createCell(5);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getBeginTime()) != null)
-                    {
-                        cell =row.createCell(6);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getEndTime()) !=null)
-                    {
-                        cell =row.createCell(7);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp2 = information.getNumber())>0)
-                    {
-                        cell =row.createCell(8);
-                        cell.setCellValue(tmp2);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getReason())!=null)
-                    {
-                        cell =row.createCell(9);
-                        cell.setCellValue(tmp);
-                        cell.setCellStyle(style);// 设置风格
-                    }
-                    if((tmp = information.getStatus()) !=null)
-                    {
-                        cell =row.createCell(10);
-                        cell.setCellStyle(style);
-                        tmp = statusChange(tmp);
-                        cell.setCellValue(tmp);
-                    }
+                    setRow(information,row,style);//将数据填充进一行
                 }
-
             }
         } catch (SecurityException | IllegalArgumentException e) {
             e.printStackTrace();
@@ -205,8 +138,87 @@ public class LeaveService {
 
     }
 
+    /**
+     * 将数据填充进excel的一行
+     * @param information 需填充的数据
+     * @param row 填充的行
+     * @param style 单元格的风格
+     */
+    private void setRow(Info information, HSSFRow row, HSSFCellStyle style)
+    {
+        Cell cell;
+        String tmp;//中间变量
+        int tmp2;
+        if((tmp = information.getStudentId())!=null)
+        {
+            cell=row.createCell(1);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getStudentName())!=null)
+        {
+            cell=row.createCell(2);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getDepartment())!=null)
+        {
+            cell =row.createCell(3);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getClassName())!=null)
+        {
+            cell =row.createCell(4);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getPhone()) != null)
+        {
+            cell =row.createCell(5);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getBeginTime()) != null)
+        {
+            cell =row.createCell(6);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getEndTime()) !=null)
+        {
+            cell =row.createCell(7);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp2 = information.getNumber())>0)
+        {
+            cell =row.createCell(8);
+            cell.setCellValue(tmp2);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getReason())!=null)
+        {
+            cell =row.createCell(9);
+            cell.setCellValue(tmp);
+            cell.setCellStyle(style);// 设置风格
+        }
+        if((tmp = information.getStatus()) !=null)
+        {
+            cell =row.createCell(10);
+            cell.setCellStyle(style);
+            tmp = statusChange(tmp);
+            cell.setCellValue(tmp);
+        }
+
+    }
+    /**
+     * 查找指定学号的学生的所有请假信息
+     * @param studentId 学生学号
+     * @return 多条请假记录
+     */
     public Result<Info> searchInfoByStudentId(String studentId) {
-        List<Info> infoList = leaveMapper.searchInfoByStudentId(studentId);
+        List<Info> infoList = leaveMapper.searchInfoByStudentId(studentId);//从Information、student中获取请假记录
         for(Info i:infoList)
         {
             String status = i.getStatus();
@@ -216,18 +228,21 @@ public class LeaveService {
         infoResult.setRows(infoList);
         return infoResult;
     }
-
+    /**
+     * 获取指定页数条数的班级记录
+     * @param count 每页显示的条数
+     * @param pageIndex 页面页码
+     * @return 请假信息表结果集
+     */
     public Result<Info> getAllInfoInPage(int count, int pageIndex) {
-        int begin = count * (pageIndex-1);
-
-        List<Info> infoList = leaveMapper.getAllInfoInPage(begin,count);
+        int begin = count * (pageIndex-1);//从数据库的第begin条开始查找
+        List<Info> infoList = leaveMapper.getAllInfoInPage(begin,count);//从Information表里获得以begin开始的前count条记录
+        int total = leaveMapper.getAllLeaveTotal();//获取所有请假记录的条数（便于前端分页）
         for(Info i:infoList)
         {
             String status = i.getStatus();
-            i.setStatus(statusChange(status));//将状态码转成中文
+            i.setStatus(statusChange(status));//将请假状态码转成中文
         }
-
-        int total = leaveMapper.getAllLeaveTotal();
         Result<Info> result = new Result<>();
         result.setTotal(total);
         result.setRows(infoList);

@@ -15,9 +15,9 @@ import java.util.List;
 public interface ClassMapper {
     List<ClassTable> searchAllClass();
 
-    //用于修改页面时的回显
+    //用于修改页面时的回显，从class表里获得班级编号为classId的记录
     AClassResult searchClassById(@Param("classId") String classId);
-    //用于查找班级时的回显
+    //用于查找班级时的回显，从class表里获得班级编号为classId的记录
     ClassTable searchClassByClassId(String classId);
 
 
@@ -39,5 +39,6 @@ public interface ClassMapper {
 
     int getAllClassTotal();
 
+    //从class表中获取指定classId的班级名称
     String getClassName(@Param("classId") String classId);
 }

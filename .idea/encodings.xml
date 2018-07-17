@@ -9,6 +9,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/AppContent.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/ClassTable.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Student.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/ClassService.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/LeaveService.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/HTTPSimple.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/User.java" charset="GBK" />
