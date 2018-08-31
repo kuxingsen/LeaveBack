@@ -83,7 +83,7 @@ public class ClassService {
         {
             if(0 == classMapper.addClass(c))
             {
-                System.out.println(c.getClassId()+"ÃÌº” ß∞‹");
+                logger.error(c.getClassId()+"ÃÌº” ß∞‹");
             }else {
                 count++;
             }

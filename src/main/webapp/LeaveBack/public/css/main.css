@@ -1,0 +1,10 @@
+#content {
+    display: block;
+    padding-left: 200px;
+    width:90%;
+    margin:0 auto;
+}
+.hint{
+    display:none;
+    margin:8px auto;
+}

@@ -122,7 +122,11 @@ public class ClassController {
     public IsSuccessResult readExcel(@RequestParam(value = "file") MultipartFile file,HttpSession session) {
         if (file != null && !file.isEmpty()) {
             String access_token = (String) session.getAttribute("accessToken");
-            return classService.readExcel(file,access_token);//读取excel
+            IsSuccessResult i = classService.readExcel(file,access_token);//读取excel
+            if(i.getCode() == -1){
+                logger.error("文件出现错误：{}", i.getMsg());
+            }
+            return i;
         }
         return new IsSuccessResult(-1,"文件不存在或文件为空");
     }

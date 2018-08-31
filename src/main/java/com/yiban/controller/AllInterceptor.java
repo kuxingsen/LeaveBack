@@ -1,7 +1,7 @@
 package com.yiban.controller;
 
 import cn.yiban.open.Authorize;
-import com.yiban.entity.AppContent;
+
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +39,7 @@ public class AllInterceptor implements HandlerInterceptor {
             Authorize authorize = new Authorize(appKey, appSecret);
             String code = httpServletRequest.getParameter("code");
             logger.info("获取的code：{}", code);
+            System.out.println(appKey);
             if (code == null || "".equals(code.trim())) {
                 String url = authorize.forwardurl(callbackUrl, "test", Authorize.DISPLAY_TAG_T.WEB);//易班授权
                 httpServletResponse.sendRedirect(url);

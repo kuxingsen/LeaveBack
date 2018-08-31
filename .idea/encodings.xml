@@ -11,6 +11,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/entity/Student.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/ClassService.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/LeaveService.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/service/StudentService.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/HTTPSimple.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/yiban/utils/yibanApi/User.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources/applicationContext.xml" charset="GBK" />
@@ -19,6 +20,16 @@
     <file url="file://$PROJECT_DIR$/src/main/resources/jdbc.properties" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources/log4j.properties" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/resources/yiban-servlet.xml" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/public" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/public" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/public" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views/add.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views/index.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views/modify.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/webapp/LeaveBack/views/show.html" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/YBOpenApi.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-beanutils-1.9.2.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/commons-codec-1.9.jar" charset="GBK" />
@@ -31,15 +42,5 @@
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpcore-4.4.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/httpmime-4.4.jar" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/lib/json-lib-2.4-jdk15.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/app.js" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/node_modules" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/package-lock.json" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/package.json" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/public" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/add.html" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/index.html" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/modify.html" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/main/webapp/views/show.html" charset="GBK" />
   </component>
 </project>

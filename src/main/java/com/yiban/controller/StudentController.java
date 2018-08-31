@@ -4,12 +4,16 @@ import com.yiban.dto.IsSuccessResult;
 import com.yiban.dto.NameResult;
 import com.yiban.entity.Student;
 import com.yiban.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * 转专业学生的操作
@@ -20,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    private Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     /**
      * 修改单个学生的班级（/views/changecls.html）
@@ -44,10 +49,14 @@ public class StudentController {
 
     @RequestMapping("/file")
     @ResponseBody
-    public IsSuccessResult readExcel(@RequestParam(value = "file", required = false) MultipartFile file) {
+    public IsSuccessResult readExcel(@RequestParam(value = "file", required = false) MultipartFile file, HttpSession session) {
         if (file != null && !file.isEmpty()) {
-            studentService.readExcel(file);
-            return new IsSuccessResult(0,"成功导入数据");
+            String access_token = (String) session.getAttribute("accessToken");
+            IsSuccessResult i = studentService.readExcel(file,access_token);//读取excel
+            if(i.getCode() == -1){
+                logger.error("文件出现错误：{}", i.getMsg());
+            }
+            return i;
         }
         return new IsSuccessResult(-1,"文件不存在或文件为空");
     }

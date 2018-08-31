@@ -1,8 +1,10 @@
 package com.yiban.service;
 
+import com.yiban.dto.IsSuccessResult;
 import com.yiban.entity.ClassTable;
 import com.yiban.entity.Student;
 import com.yiban.mapper.StudentMapper;
+import com.yiban.utils.excel.WriteExcel;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -35,65 +37,79 @@ public class StudentService {
     private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     /**
-     * ä¿®æ”¹å•ä¸ªå­¦ç”Ÿçš„ç­çº§
-     * @param student å­¦ç”Ÿä¿¡æ¯ï¼ˆåªæœ‰å­¦å·å’Œæ–°ç­çº§ï¼‰
-     * @return ä¿®æ”¹çš„æ¡æ•°
+     * ĞŞ¸Äµ¥¸öÑ§ÉúµÄ°à¼¶
+     * @param student Ñ§ÉúĞÅÏ¢£¨Ö»ÓĞÑ§ºÅºÍĞÂ°à¼¶£©
+     * @return ĞŞ¸ÄµÄÌõÊı
      */
     public int modifyClass(Student student) {
-        int i = studentMapper.hasStudent(student);//çœ‹æ•°æ®åº“æœ‰æ²¡æœ‰è¿™ä¸ªå­¦ç”Ÿï¼Œä¸€èˆ¬æ˜¯æœ‰çš„
+        int i = studentMapper.hasStudent(student);//¿´Êı¾İ¿âÓĞÃ»ÓĞÕâ¸öÑ§Éú£¬Ò»°ãÊÇÓĞµÄ
 //        System.out.println(i);
         if (i > 0) {
-            i = studentMapper.modifyClass(student);//æ ¹æ®å­¦å·ä¿®æ”¹ç­çº§
+            i = studentMapper.modifyClass(student);//¸ù¾İÑ§ºÅĞŞ¸Ä°à¼¶
         }
         return i;
     }
 
     /**
-     * è¯»å–excelæ–‡ä»¶ï¼Œæ‰¹é‡å¯¼å…¥ç­çº§ï¼ˆæ²¡æœ‰è¿›è¡Œæ ¡éªŒï¼‰
-     * @param file å¯¼å…¥çš„æ–‡ä»¶ï¼Œè¯¥æ–‡ä»¶éœ€ä¸ºæŒ‡å®šæ ¼å¼ï¼ˆå­¦ç”Ÿå­¦å·ã€å­¦ç”Ÿå§“åã€æ˜“ç­idã€æ–°ç­çº§idï¼‰
-     *             å®é™…ä½¿ç”¨çš„åªæœ‰å­¦å·å’Œæ–°ç­çº§ï¼ˆå› ä¸ºä¸€ä»½excelåªæœ‰ä¸¤åˆ—çš„è¯æ€ªæ€ªçš„ï¼‰
+     * ¶ÁÈ¡excelÎÄ¼ş£¬ÅúÁ¿µ¼Èë°à¼¶£¨Ã»ÓĞ½øĞĞĞ£Ñé£©
+     * @param file µ¼ÈëµÄÎÄ¼ş£¬¸ÃÎÄ¼şĞèÎªÖ¸¶¨¸ñÊ½£¨Ñ§ÉúÑ§ºÅ¡¢Ñ§ÉúĞÕÃû¡¢Ò×°àid¡¢ĞÂ°à¼¶id£©
+     *             Êµ¼ÊÊ¹ÓÃµÄÖ»ÓĞÑ§ºÅºÍĞÂ°à¼¶£¨ÒòÎªÒ»·İexcelÖ»ÓĞÁ½ÁĞµÄ»°¹Ö¹ÖµÄ£©
      */
-    public void readExcel(MultipartFile file) {
+    public IsSuccessResult readExcel(MultipartFile file,String access_token) {
         List<Student> studentList = new ArrayList<>();
+        String msg="";
         try {
-            logger.info("ä¸Šä¼ çš„æ–‡ä»¶åï¼š{}", file.getOriginalFilename());
-            Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-            String day = format.format(date);
             String fileName = file.getOriginalFilename();
-            String filePath = "D://TestLeave2//" + day + "//" + fileName;
-            File excelFile = new File(filePath);
-            FileUtils.copyInputStreamToFile(file.getInputStream(),excelFile);
-
+            logger.info("ÉÏ´«µÄÎÄ¼şÃû£º{}", fileName);
+            String filePath = WriteExcel.write(file);//´æ´¢Î»ÖÃÓĞ´ıÉÌÈ¶
+            File excelFile = null;
+            if (filePath != null) {
+                excelFile = new File(filePath);
+            }else {
+                msg = "ÎÄ¼ş±£´æ´íÎó";
+                return new IsSuccessResult(-1,msg);
+            }
             InputStream is = new FileInputStream(excelFile);
             try {
                 String fileType = fileName.substring(fileName.lastIndexOf(".") + 1);
-                //è·å–å·¥ä½œè–„
+                //»ñÈ¡¹¤×÷±¡
                 Workbook wb = null;
                 if (fileType.equals("xls")) {
                     wb = new HSSFWorkbook(is);
                 } else if (fileType.equals("xlsx")) {
                     wb = new XSSFWorkbook(is);
                 } else {
-                    return;
+                    msg = "ÎÄ¼ş²»ÊÇxls»òxlsx¸ñÊ½";
+                    return new IsSuccessResult(-1,msg);
                 }
-                //è¯»å–ç¬¬ä¸€ä¸ªå·¥ä½œé¡µsheet
+                //¶ÁÈ¡µÚÒ»¸ö¹¤×÷Ò³sheet
                 Sheet sheet = wb.getSheetAt(0);
-                //ç¬¬ä¸€è¡Œä¸ºæ ‡é¢˜
+                //µÚÒ»ĞĞÎª±êÌâ
                 for (int i = 1;i < sheet.getLastRowNum()+1;i++)
                 {
                     Row row = sheet.getRow(i);
                     for (Cell cell : row) {
-                        //æ ¹æ®ä¸åŒç±»å‹è½¬åŒ–æˆå­—ç¬¦ä¸²
-                        cell.setCellType(Cell.CELL_TYPE_STRING);
+                        if(cell != null)
+                        {
+                            //¸ù¾İ²»Í¬ÀàĞÍ×ª»¯³É×Ö·û´®
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            if(cell.getStringCellValue() == null || (cell.getStringCellValue()).equals("")){
+                                msg += (1+row.getRowNum())+"ĞĞ"+(cell.getColumnIndex()+1)+"ÁĞÎª¿Õ\t";//¿Õµ¥Ôª
+//                                System.out.println((1+row.getRowNum())+"ĞĞ"+(cell.getColumnIndex()+1)+"ÁĞ");
+                            }
+                        }else {
+                            msg += (1+row.getRowNum())+"ĞĞ"+(1+i)+"ÁĞÎª¿Õ\t";//¿Õµ¥Ôª
+//                            System.out.println((1+row.getRowNum())+"ĞĞ"+(1+i)+"ÁĞ");
+                        }
                     }
                     Student student = new Student();
-                    //éå†æ¯è¡Œä¸­çš„æ¯åˆ—
-                    student.setStudentId(row.getCell(0).getStringCellValue());//å­¦å·
-                    student.setName(row.getCell(1).getStringCellValue());//å§“å
-                    student.setYibanId(row.getCell(2).getStringCellValue());//æ˜“ç­id
-                    student.setJudgeIsNewClassId(row.getCell(3).getStringCellValue());//æ–°ç­çº§id
+                    //±éÀúÃ¿ĞĞÖĞµÄÃ¿ÁĞ
+                    student.setStudentId(row.getCell(0).getStringCellValue());//Ñ§ºÅ
+                    student.setName(row.getCell(1).getStringCellValue());//ĞÕÃû
+                    student.setYibanId(row.getCell(2).getStringCellValue());//Ò×°àid
+                    student.setJudgeIsNewClassId(row.getCell(3).getStringCellValue());//ĞÂ°à¼¶id
                     System.out.println(student);
+
                     studentList.add(student);
                 }
             } catch (IOException e) {
@@ -105,29 +121,45 @@ public class StudentService {
                     e.printStackTrace();
                 }
             }
-            modifyStudentList(studentList);
+            if(!msg.equals(""))
+            {
+                return new IsSuccessResult(-1,msg);
+            }
+
+            int count = modifyStudentList(studentList);
+            msg = "ÎÄ¼ş¹²ÓĞ"+studentList.size()+"Ìõ¼ÇÂ¼£¬³É¹¦µ¼Èë"+count+"Ìõ";
+            return new IsSuccessResult(0,msg);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        msg="ÎÄ¼şµ¼ÈëÊ§°Ü";
+        return new IsSuccessResult(-1,msg);
     }
 
     /**
-     * æ‰¹é‡ä¿®æ”¹å­¦ç”Ÿç­çº§
-     * @param studentList éœ€ä¿®æ”¹çš„å­¦ç”Ÿåˆ—è¡¨
+     * ÅúÁ¿ĞŞ¸ÄÑ§Éú°à¼¶
+     * @param studentList ĞèĞŞ¸ÄµÄÑ§ÉúÁĞ±í
      */
-    private void modifyStudentList(List<Student> studentList) {
+    private int modifyStudentList(List<Student> studentList) {
+        int count = 0;
         for(Student student:studentList)
         {
-            studentMapper.modifyClass(student);
+            if(0 == studentMapper.modifyClass(student))
+            {
+                logger.error(student.getStudentId()+"Ìí¼ÓÊ§°Ü");
+            }else {
+                count++;
+            }
         }
+        return count;
     }
 
     /**
-     * é€šè¿‡å­¦å·è·å–å­¦ç”Ÿå§“å
-     * @param studentId å­¦å·
-     * @return ç›¸åº”çš„å§“å
+     * Í¨¹ıÑ§ºÅ»ñÈ¡Ñ§ÉúĞÕÃû
+     * @param studentId Ñ§ºÅ
+     * @return ÏàÓ¦µÄĞÕÃû
      */
     public String getName(String studentId) {
-        return studentMapper.getName(studentId);//ä»studentä¸­è·å–å§“å
+        return studentMapper.getName(studentId);//´ÓstudentÖĞ»ñÈ¡ĞÕÃû
     }
 }

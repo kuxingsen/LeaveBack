@@ -39,7 +39,7 @@
 				<prop key="number_format">#.##</prop>
 			</props>
 		</property>
-		<property name="templateLoaderPath" value="/views/" />
+		<property name="templateLoaderPath" value="/LeaveBack/views/" />
 		<property name="freemarkerVariables">
 			<map>
 				<entry key="xml_escape" value-ref="fmXmlEscape" />

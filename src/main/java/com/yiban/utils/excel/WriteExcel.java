@@ -18,8 +18,12 @@ public class WriteExcel {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String day = format.format(date);
         String fileName = file.getOriginalFilename();
-        String filePath = "D://TestLeave2//" + day + "//" + fileName;
+        String filePath = "C://LeaveBack//" + day + "//" + fileName;
         File excelFile = new File(filePath);
+        if (!excelFile.getParentFile().exists()) {
+            boolean mk=excelFile.getParentFile().mkdirs();
+            System.err.println("create:"+mk);
+        }
         try {
             FileUtils.copyInputStreamToFile(file.getInputStream(),excelFile);//先把文件保存下来以免不时之需
         } catch (IOException e) {
